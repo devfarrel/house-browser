@@ -39,9 +39,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
       </div>
 
       <div className="mt-6 flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold">{listing.title}</h1>
+        <h1 className="font-heading text-2xl font-semibold">{listing.title}</h1>
         <p className="text-muted-foreground">{listing.address}</p>
-        <p className="text-2xl font-bold text-primary">
+        <p className="text-2xl font-bold text-primary font-heading">
           ${listing.price.toLocaleString()}
         </p>
         <div className="flex gap-4 text-sm text-muted-foreground">
