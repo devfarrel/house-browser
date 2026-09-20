@@ -4,9 +4,10 @@ import { ListingCard } from "./listing-card";
 interface ListingGridProps {
   listings: Listing[];
   onHover?: (id: string | null) => void;
+  onSelect?: (id: string) => void;
 }
 
-export function ListingGrid({ listings, onHover }: ListingGridProps) {
+export function ListingGrid({ listings, onHover, onSelect }: ListingGridProps) {
   if (listings.length === 0) {
     return (
       <p className="py-12 text-center text-muted-foreground">
@@ -18,7 +19,12 @@ export function ListingGrid({ listings, onHover }: ListingGridProps) {
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {listings.map((listing) => (
-        <ListingCard key={listing.id} listing={listing} onHover={onHover} />
+        <ListingCard
+          key={listing.id}
+          listing={listing}
+          onHover={onHover}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );

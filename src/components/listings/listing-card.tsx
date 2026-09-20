@@ -20,9 +20,10 @@ import { cn } from "@/lib/utils";
 interface ListingCardProps {
   listing: Listing;
   onHover?: (id: string | null) => void;
+  onSelect?: (id: string) => void;
 }
 
-export function ListingCard({ listing, onHover }: ListingCardProps) {
+export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
   const { user, favoriteIds, toggleFavorite } = useFavorites();
   const isFavorited = favoriteIds.has(listing.id);
 
@@ -31,26 +32,25 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
       className="relative mx-auto flex h-full w-full max-w-sm flex-col pt-0"
       onMouseEnter={() => onHover?.(listing.id)}
       onMouseLeave={() => onHover?.(null)}
+      onClick={() => onSelect?.(listing.id)}
     >
-      <Link href={`/listing/${listing.id}`}>
-        <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
-          <Image
-            src={listing.imageUrl}
-            alt={listing.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
-          />
-          <Badge className="absolute right-2 top-2" variant="secondary">
-            {listing.type}
-          </Badge>
-        </div>
-      </Link>
+      <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
+        <Image
+          src={listing.imageUrl}
+          alt={listing.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+        />
+        <Badge className="absolute right-2 top-2" variant="secondary">
+          {listing.type}
+        </Badge>
+      </div>
 
       {user && (
         <button
           onClick={(e) => {
-            e.preventDefault();
+            e.stopPropagation();
             toggleFavorite(listing.id);
           }}
           aria-label={
@@ -70,22 +70,20 @@ export function ListingCard({ listing, onHover }: ListingCardProps) {
         </button>
       )}
 
-      <Link href={`/listing/${listing.id}`} className="flex flex-1 flex-col">
-        <CardHeader className="flex-1">
-          <CardAction>
-            <button>
-              <Ellipsis />
-            </button>
-          </CardAction>
-          <CardTitle className="font-heading truncate text-xl">
-            ${listing.price.toLocaleString()}
-          </CardTitle>
-          <CardDescription>
-            {listing.title} · {listing.city} · {listing.beds} bd /{" "}
-            {listing.baths} ba
-          </CardDescription>
-        </CardHeader>
-      </Link>
+      <CardHeader className="flex-1">
+        <CardAction>
+          <button>
+            <Ellipsis />
+          </button>
+        </CardAction>
+        <CardTitle className="font-heading truncate text-xl">
+          ${listing.price.toLocaleString()}
+        </CardTitle>
+        <CardDescription>
+          {listing.title} · {listing.city} · {listing.beds} bd / {listing.baths}{" "}
+          ba
+        </CardDescription>
+      </CardHeader>
 
       <CardFooter className="pt-2">
         <Button className="w-full">

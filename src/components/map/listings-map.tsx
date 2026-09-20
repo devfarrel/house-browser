@@ -20,12 +20,6 @@ const defaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 
-interface ListingsMapProps {
-  listings: Listing[];
-  activeListingId?: string | null;
-  onMarkerHover?: (id: string | null) => void;
-}
-
 function FitBounds({ listings }: { listings: Listing[] }) {
   const map = useMap();
 
@@ -38,9 +32,36 @@ function FitBounds({ listings }: { listings: Listing[] }) {
   return null;
 }
 
+function FlyToSelected({
+  listings,
+  selectedListingId,
+}: {
+  listings: Listing[];
+  selectedListingId?: string | null;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!selectedListingId) return;
+    const listing = listings.find((l) => l.id === selectedListingId);
+    if (!listing) return;
+    map.flyTo([listing.lat, listing.lng], 14, { duration: 0.8 });
+  }, [selectedListingId, listings, map]);
+
+  return null;
+}
+
+interface ListingsMapProps {
+  listings: Listing[];
+  activeListingId?: string | null;
+  selectedListingId?: string | null;
+  onMarkerHover?: (id: string | null) => void;
+}
+
 export function ListingsMap({
   listings,
   activeListingId,
+  selectedListingId,
   onMarkerHover,
 }: ListingsMapProps) {
   const center: [number, number] =
@@ -58,6 +79,10 @@ export function ListingsMap({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <FitBounds listings={listings} />
+      <FlyToSelected
+        listings={listings}
+        selectedListingId={selectedListingId}
+      />
       {listings.map((listing) => (
         <Marker
           key={listing.id}

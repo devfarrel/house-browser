@@ -11,6 +11,9 @@ import { ListingsMapClient } from "@/components/map/listings-map-client";
 export default function Home() {
   const [filters, setFilters] = useState<ListingFilters>({});
   const [activeListingId, setActiveListingId] = useState<string | null>(null);
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(
+    null,
+  );
 
   const filtered = useMemo(() => filterListings(listings, filters), [filters]);
 
@@ -26,12 +29,17 @@ export default function Home() {
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <div className="order-2 lg:order-1">
-          <ListingGrid listings={filtered} onHover={setActiveListingId} />
+          <ListingGrid
+            listings={filtered}
+            onHover={setActiveListingId}
+            onSelect={setSelectedListingId}
+          />
         </div>
-        <div className="order-1 h-[400px] lg:sticky lg:top-20 lg:order-2 lg:h-[calc(100vh-10rem)]">
+        <div className="order-1 h-[100] lg:sticky lg:top-20 lg:order-2 lg:h-[calc(100vh-10rem)]">
           <ListingsMapClient
             listings={filtered}
             activeListingId={activeListingId}
+            selectedListingId={selectedListingId}
             onMarkerHover={setActiveListingId}
           />
         </div>

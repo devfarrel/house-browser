@@ -18,6 +18,7 @@ const ListingsMap = dynamic(
 interface ListingsMapClientProps {
   listings: Listing[];
   activeListingId?: string | null;
+  selectedListingId?: string | null;
   onMarkerHover?: (id: string | null) => void;
 }
 
