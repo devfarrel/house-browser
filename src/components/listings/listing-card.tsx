@@ -85,10 +85,10 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
         </CardDescription>
       </CardHeader>
 
-      <CardFooter className="pt-2">
-        <Button className="w-full">
-          <Link href={`/listing/${listing.id}`}>View Details</Link>
-        </Button>
+      <CardFooter className="pt-2" onClick={(e) => e.stopPropagation()}>
+        <Link href={`/listing/${listing.id}`} className="block w-full">
+          <Button className="w-full">View Details</Button>
+        </Link>
       </CardFooter>
     </Card>
   );

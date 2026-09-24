@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function AuthWidget() {
-  const { user, loading, signInWithEmail, signOut } = useFavorites();
+  const { user, loading, signUpWithPassword, signInWithPassword, signOut } =
+    useFavorites();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,32 +31,9 @@ export function AuthWidget() {
     }
 
     return (
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          setError(null);
-          const { error } = await signInWithEmail(email);
-          if (error) {
-            setError(error.message);
-            return;
-          }
-          setSent(true);
-        }}
-        className="flex items-center gap-2"
-      >
-        <Input
-          type="email"
-          required
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="h-9 w-44"
-        />
-        <Button type="submit" size="sm">
-          Sign in
-        </Button>
-        {error && <p className="text-sm text-destructive">{error}</p>}
-      </form>
+      <Button size="sm">
+        <Link href="/login">Sign in</Link>
+      </Button>
     );
   }
 

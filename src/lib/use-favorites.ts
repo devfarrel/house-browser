@@ -87,14 +87,16 @@ export function useFavorites() {
     [supabase, user, favoriteIds],
   );
 
-  const signInWithEmail = useCallback(
-    async (email: string) => {
-      return supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/confirm`,
-        },
-      });
+  const signUpWithPassword = useCallback(
+    async (email: string, password: string) => {
+      return supabase.auth.signUp({ email, password });
+    },
+    [supabase],
+  );
+
+  const signInWithPassword = useCallback(
+    async (email: string, password: string) => {
+      return supabase.auth.signInWithPassword({ email, password });
     },
     [supabase],
   );
@@ -106,7 +108,8 @@ export function useFavorites() {
     loading,
     favoriteIds,
     toggleFavorite,
-    signInWithEmail,
+    signUpWithPassword,
+    signInWithPassword,
     signOut,
   };
 }

@@ -128,3 +128,25 @@
     @apply font-sans;
   }
 }
+
+/* Leaflet overrides go here, at the very end */
+.leaflet-popup-content-wrapper {
+  background: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border-radius: var(--radius) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: 200px !important;
+}
+
+.leaflet-popup-content p {
+  margin: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--card) !important;
+}
