@@ -11,6 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Listing } from "@/types/listing";
@@ -42,7 +48,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover"
         />
-        <Badge className="absolute right-2 top-2" variant="secondary">
+        <Badge className="absolute left-2 top-2" variant="secondary">
           {listing.type}
         </Badge>
       </div>
@@ -72,9 +78,39 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
 
       <CardHeader className="flex-1">
         <CardAction>
-          <button>
-            <Ellipsis />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label="More options"
+                >
+                  <Ellipsis className="h-4 w-4" />
+                </button>
+              }
+            />
+            <DropdownMenuContent
+              align="end"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {user && (
+                <DropdownMenuItem onClick={() => toggleFavorite(listing.id)}>
+                  <Heart
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      isFavorited ? "fill-primary text-primary" : "",
+                    )}
+                  />
+                  {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem
+                render={
+                  <Link href={`/listing/${listing.id}`}>View Details</Link>
+                }
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardAction>
         <CardTitle className="font-heading truncate text-xl">
           ${listing.price.toLocaleString()}
