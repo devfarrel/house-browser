@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -21,9 +22,9 @@ export function AuthWidget() {
 
   if (!user) {
     return (
-      <Button size="sm">
-        <Link href="/login">Sign in</Link>
-      </Button>
+      <Link href="/login" className="inline-block">
+        <Button size="sm">Sign in</Button>
+      </Link>
     );
   }
 
@@ -43,23 +44,29 @@ export function AuthWidget() {
         }
       />
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
-          {user.email}
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+            {user.email}
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          render={
-            <Link href="/favorites">
-              <Heart className="mr-2 h-4 w-4" />
-              My Favorites
-            </Link>
-          }
-        />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            render={
+              <Link href="/favorites">
+                <Heart className="mr-2 h-4 w-4" />
+                My Favorites
+              </Link>
+            }
+          />
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>
-          <LogOut className="mr-2 h-4 w-4" />
-          Sign out
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => signOut()}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

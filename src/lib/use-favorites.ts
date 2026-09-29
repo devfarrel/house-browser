@@ -7,14 +7,16 @@ import type { User } from "@supabase/supabase-js";
 export function useFavorites() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
-  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [favoriteIds, setFavoriteIds] = useState<Map<string, string>>(
+    new Map(),
+  );
 
   const loadFavorites = useCallback(
     async (userId: string) => {
       const { data, error } = await supabase
         .from("favorites")
-        .select("listing_id")
+        .select("listing_id, created_at")
         .eq("user_id", userId);
 
       if (error) {
@@ -22,7 +24,9 @@ export function useFavorites() {
         return;
       }
 
-      setFavoriteIds(new Set(data.map((row) => row.listing_id)));
+      setFavoriteIds(
+        new Map(data.map((row) => [row.listing_id, row.created_at])),
+      );
     },
     [supabase],
   );
@@ -40,7 +44,7 @@ export function useFavorites() {
         if (session?.user) {
           loadFavorites(session.user.id);
         } else {
-          setFavoriteIds(new Set());
+          setFavoriteIds(new Map());
         }
       },
     );
@@ -67,7 +71,7 @@ export function useFavorites() {
         }
 
         setFavoriteIds((prev) => {
-          const next = new Set(prev);
+          const next = new Map(prev);
           next.delete(listingId);
           return next;
         });
@@ -81,7 +85,11 @@ export function useFavorites() {
           return;
         }
 
-        setFavoriteIds((prev) => new Set(prev).add(listingId));
+        setFavoriteIds((prev) => {
+          const next = new Map(prev);
+          next.set(listingId, new Date().toISOString());
+          return next;
+        });
       }
     },
     [supabase, user, favoriteIds],
