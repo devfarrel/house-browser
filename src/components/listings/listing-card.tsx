@@ -42,7 +42,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
     >
       <div className="group relative aspect-video w-full overflow-hidden rounded-t-xl">
         <Image
-          src={listing.imageUrl}
+          src={listing.images[0]}
           alt={listing.title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"

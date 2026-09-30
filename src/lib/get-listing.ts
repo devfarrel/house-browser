@@ -5,6 +5,6 @@ export function getListingById(id: string): Listing | undefined {
   return listings.find((listing) => listing.id === id);
 }
 
-export function getAllListingByIds(): string[] {
+export function getAllListingIds(): string[] {
   return listings.map((listing) => listing.id);
 }

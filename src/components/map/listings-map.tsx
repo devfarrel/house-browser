@@ -126,7 +126,7 @@ export function ListingsMap({
             >
               <div className="relative h-28 w-full overflow-hidden rounded-t-[inherit]">
                 <Image
-                  src={listing.imageUrl}
+                  src={listing.images[0]}
                   alt={listing.title}
                   fill
                   sizes="220px"

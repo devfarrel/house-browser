@@ -15,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ListingGridSkeleton } from "@/components/listings/listing-grid-skeleton";
 
 type SortOption = "recent" | "price-asc" | "price-desc";
 
@@ -58,8 +60,27 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto max-w-7xl p-4 sm:p-6">
-        <p className="text-muted-foreground">Loading…</p>
+      <main className="mx-auto p-4 sm:p-6">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <Skeleton className="mb-2 h-8 w-48" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <Skeleton className="h-9 w-44" />
+        </div>
+
+        <div className="mb-6 grid grid-cols-3 gap-3 rounded-xl border p-4 sm:max-w-md">
+          <Skeleton className="mx-auto h-10 w-20" />
+          <Skeleton className="mx-auto h-10 w-20" />
+          <Skeleton className="mx-auto h-10 w-20" />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            <ListingGridSkeleton />
+          </div>
+          <Skeleton className="h-100 rounded-xl lg:col-span-2 lg:h-[calc(100vh-14rem)]" />
+        </div>
       </main>
     );
   }

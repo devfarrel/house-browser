@@ -12,7 +12,7 @@ export interface Listing {
   type: HouseType;
   lat: number;
   lng: number;
-  imageUrl: string;
+  images: string[];
   description: string;
 }
 
