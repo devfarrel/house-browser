@@ -1,47 +1,62 @@
+// src/components/browse-view.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { listings } from "@/data/listings";
-import { ListingFilters } from "@/types/listing";
 import { filterListings } from "@/lib/filter-listings";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { ListingGrid } from "@/components/listings/listing-grid";
-import { ListingsMapClient } from "@/components/map/listings-map-client";
+import type { Listing, ListingFilters } from "@/types/listing";
 
-export function BrowseView() {
-  const [filters, setFilters] = useState<ListingFilters>({});
-  const [activeListingId, setActiveListingId] = useState<string | null>(null);
-  const [selectedListingId, setSelectedListingId] = useState<string | null>(
-    null,
-  );
+const ListingsMapClient = dynamic(
+  () =>
+    import("@/components/map/listings-map-client").then(
+      (mod) => mod.ListingsMapClient,
+    ),
+  { ssr: false },
+);
 
-  const filtered = useMemo(() => filterListings(listings, filters), [filters]);
+interface BrowseViewProps {
+  initialFilters?: ListingFilters;
+}
+
+export function BrowseView({ initialFilters = {} }: BrowseViewProps) {
+  const [filters, setFilters] = useState<ListingFilters>(initialFilters);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
+
+  const filteredListings = useMemo(() => {
+    return filterListings(listings, filters);
+  }, [filters]);
+
+  const handleListingSelect = (id: string) => {
+    const nextSelectedListing =
+      filteredListings.find((listing) => listing.id === id) ?? null;
+
+    setSelectedListing(nextSelectedListing);
+  };
 
   return (
-    <main className="mx-auto p-4 sm:p-6">
-      <h1 className="mb-4 font-heading text-2xl font-semibold">
-        Find your next home
-      </h1>
-      <div className="mb-6">
-        <FilterBar filters={filters} onChange={setFilters} />
-      </div>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-        <div className="order-2 lg:order-1 lg:col-span-3">
+    <div className="flex flex-1 flex-col h-[calc(100vh-4rem)]">
+      <FilterBar filters={filters} onChange={setFilters} />
+      <div className="flex flex-1 overflow-hidden">
+        <div className="w-full lg:w-1/2 overflow-y-auto p-4 sm:p-6">
           <ListingGrid
-            listings={filtered}
-            onHover={setActiveListingId}
-            onSelect={setSelectedListingId}
+            listings={filteredListings}
+            onHover={setHoveredId}
+            onSelect={handleListingSelect}
           />
         </div>
-        <div className="order-1 h-100 lg:sticky lg:top-20 lg:order-2 lg:col-span-2 lg:h-[calc(100vh-10rem)]">
+        <div className="hidden lg:block lg:w-1/2 h-full border-l border-border relative">
           <ListingsMapClient
-            listings={filtered}
-            activeListingId={activeListingId}
-            selectedListingId={selectedListingId}
-            onMarkerHover={setActiveListingId}
+            listings={filteredListings}
+            activeListingId={hoveredId}
+            selectedListingId={selectedListing?.id}
+            onMarkerHover={setHoveredId}
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 }

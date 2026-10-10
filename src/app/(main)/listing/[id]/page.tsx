@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getListingById, getAllListingIds } from "@/lib/get-listing";
-import { ListingDetailOverlay } from "@/components/listings/listing-detail-overlay";
+import { ListingDetailContent } from "@/components/listings/listing-detail-content";
 
 interface ListingPageProps {
   params: Promise<{ id: string }>;
@@ -18,5 +18,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
     notFound();
   }
 
-  return <ListingDetailOverlay listing={listing} />;
+  return (
+    <main className="mx-auto max-w-5xl p-4 sm:p-6">
+      <ListingDetailContent listing={listing} />
+    </main>
+  );
 }

@@ -26,7 +26,7 @@ export function AuthWidget() {
   if (!user) {
     return (
       <Link href="/login" className="inline-block">
-        <Button size="sm">Sign in</Button>
+        <Button size="lg">Sign in</Button>
       </Link>
     );
   }

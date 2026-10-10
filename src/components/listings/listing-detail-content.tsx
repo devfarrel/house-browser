@@ -1,9 +1,12 @@
+"use client";
+
 import { Listing } from "@/types/listing";
 import { PhotoGallery } from "@/components/listings/photo-gallery";
 import { ListingsMapClient } from "@/components/map/listings-map-client";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Home, Ruler, Bath, Bed, Calendar, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const mockAgents = [
   { name: "Jordan Reyes", title: "Hearth Listing Agent" },
@@ -29,13 +32,10 @@ function getMockOpenHouses(id: string) {
 
 interface ListingDetailContentProps {
   listing: Listing;
-  onClose?: () => void;
 }
 
-export function ListingDetailContent({
-  listing,
-  onClose,
-}: ListingDetailContentProps) {
+export function ListingDetailContent({ listing }: ListingDetailContentProps) {
+  const router = useRouter();
   const agent = getMockAgent(listing.id);
   const openHouses = getMockOpenHouses(listing.id);
   const initials = agent.name
@@ -48,15 +48,13 @@ export function ListingDetailContent({
       <div className="relative">
         <PhotoGallery images={listing.images} alt={listing.title} />
 
-        {onClose && (
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute right-3 top-3 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition hover:bg-black/80"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        )}
+        <button
+          onClick={() => router.back()}
+          aria-label="Back"
+          className="absolute right-3 top-3 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition hover:bg-black/80"
+        >
+          <X className="h-5 w-5" />
+        </button>
       </div>
 
       <div className="p-6">
