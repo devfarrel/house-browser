@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useFavorites } from "@/lib/use-favorites";
 import { getListingById } from "@/lib/get-listing";
-import { Listing } from "@/types/listing";
+import type { Listing } from "@/types/listing";
 import { ListingGrid } from "@/components/listings/listing-grid";
 import { ListingsMapClient } from "@/components/map/listings-map-client";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,31 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ListingGridSkeleton } from "@/components/listings/listing-grid-skeleton";
 
 type SortOption = "recent" | "price-asc" | "price-desc";
+
+const sortOptions: { value: SortOption; label: string }[] = [
+  { value: "recent", label: "Recently added" },
+  { value: "price-asc", label: "Price: low to high" },
+  { value: "price-desc", label: "Price: high to low" },
+];
+
+function SplitLayout({
+  children,
+  map,
+}: {
+  children: ReactNode;
+  map: ReactNode;
+}) {
+  return (
+    <main className="flex h-[calc(100vh-4rem)]">
+      <div className="w-full overflow-y-auto p-4 lg:w-1/2">{children}</div>
+      <div className="hidden h-full p-4 pl-0 lg:block lg:w-1/2">
+        <div className="isolate h-full w-full overflow-hidden rounded-xl border border-border">
+          {map}
+        </div>
+      </div>
+    </main>
+  );
+}
 
 export default function FavoritesPage() {
   const { user, loading, favoriteIds } = useFavorites();
@@ -60,7 +85,7 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <main className="mx-auto p-4 sm:p-6">
+      <SplitLayout map={<Skeleton className="h-full w-full rounded-none" />}>
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <Skeleton className="mb-2 h-8 w-48" />
@@ -68,41 +93,57 @@ export default function FavoritesPage() {
           </div>
           <Skeleton className="h-9 w-44" />
         </div>
-
-        <div className="mb-6 grid grid-cols-3 gap-3 rounded-xl border p-4 sm:max-w-md">
+        <div className="mb-4 grid grid-cols-3 gap-3 rounded-xl border p-4 sm:max-w-md">
           <Skeleton className="mx-auto h-10 w-20" />
           <Skeleton className="mx-auto h-10 w-20" />
           <Skeleton className="mx-auto h-10 w-20" />
         </div>
-
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          <div className="lg:col-span-3">
-            <ListingGridSkeleton />
-          </div>
-          <Skeleton className="h-100 rounded-xl lg:col-span-2 lg:h-[calc(100vh-14rem)]" />
-        </div>
-      </main>
+        <ListingGridSkeleton />
+      </SplitLayout>
     );
   }
 
   if (!user) {
     return (
-      <main className="mx-auto flex max-w-7xl flex-col items-center gap-4 p-4 py-16 text-center sm:p-6">
+      <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
         <h1 className="font-heading text-2xl font-semibold">
           Sign in to see your favorites
         </h1>
         <p className="text-muted-foreground">
           Save listings you like and find them here later.
         </p>
-        <Button>
-          <Link href="/login">Sign in</Link>
-        </Button>
+        <Link href="/login">
+          <Button>Sign in</Button>
+        </Link>
+      </main>
+    );
+  }
+
+  if (favoriteListings.length === 0) {
+    return (
+      <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
+        <h1 className="font-heading text-2xl font-semibold">My Favorites</h1>
+        <p className="text-muted-foreground">
+          You haven&apos;t saved any listings yet.
+        </p>
+        <Link href="/browse">
+          <Button variant="outline">Browse listings</Button>
+        </Link>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto p-4 sm:p-6">
+    <SplitLayout
+      map={
+        <ListingsMapClient
+          listings={favoriteListings}
+          activeListingId={activeListingId}
+          selectedListingId={selectedListingId}
+          onMarkerHover={setActiveListingId}
+        />
+      }
+    >
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-heading text-2xl font-semibold">My Favorites</h1>
@@ -112,25 +153,26 @@ export default function FavoritesPage() {
           </p>
         </div>
 
-        {favoriteListings.length > 0 && (
-          <Select
-            value={sortBy}
-            onValueChange={(v) => setSortBy(v as SortOption)}
-          >
-            <SelectTrigger className="w-44">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="recent">Recently added</SelectItem>
-              <SelectItem value="price-asc">Price: low to high</SelectItem>
-              <SelectItem value="price-desc">Price: high to low</SelectItem>
-            </SelectContent>
-          </Select>
-        )}
+        <Select
+          items={sortOptions}
+          value={sortBy}
+          onValueChange={(value) => setSortBy(value as SortOption)}
+        >
+          <SelectTrigger className="w-44">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {sortOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {stats && (
-        <div className="mb-6 grid grid-cols-3 gap-3 rounded-xl border p-4 text-center sm:max-w-md">
+        <div className="mb-4 grid grid-cols-3 gap-3 rounded-xl border p-4 text-center sm:max-w-md">
           <div>
             <p className="font-heading text-lg font-semibold">
               ${stats.avg.toLocaleString()}
@@ -152,34 +194,11 @@ export default function FavoritesPage() {
         </div>
       )}
 
-      {favoriteListings.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 py-16 text-center">
-          <p className="text-muted-foreground">
-            You haven&apos;t saved any listings yet.
-          </p>
-          <Button variant="outline">
-            <Link href="/">Browse listings</Link>
-          </Button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          <div className="order-2 lg:order-1 lg:col-span-3">
-            <ListingGrid
-              listings={favoriteListings}
-              onHover={setActiveListingId}
-              onSelect={setSelectedListingId}
-            />
-          </div>
-          <div className="order-1 h-100 lg:sticky lg:top-20 lg:order-2 lg:col-span-2 lg:h-[calc(100vh-14rem)]">
-            <ListingsMapClient
-              listings={favoriteListings}
-              activeListingId={activeListingId}
-              selectedListingId={selectedListingId}
-              onMarkerHover={setActiveListingId}
-            />
-          </div>
-        </div>
-      )}
-    </main>
+      <ListingGrid
+        listings={favoriteListings}
+        onHover={setActiveListingId}
+        onSelect={setSelectedListingId}
+      />
+    </SplitLayout>
   );
 }

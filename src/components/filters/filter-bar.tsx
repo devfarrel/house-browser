@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { HouseType, ListingFilters } from "@/types/listing";
+import type { HouseType, ListingFilters } from "@/types/listing";
 
 interface FilterBarProps {
   filters: ListingFilters;
@@ -35,19 +35,27 @@ const bedOptions = [
 ];
 
 export function FilterBar({ filters, onChange }: FilterBarProps) {
+  // No active filter -> null, so the trigger shows its placeholder.
+  const typeValue = filters.type ?? null;
+  const bedsValue = filters.minBeds ? String(filters.minBeds) : null;
+
   return (
-    <div className="flex flex-wrap gap-3 rounded-xl border p-4">
+    <div className="flex flex-wrap gap-3">
       <Input
         placeholder="Search by city"
         value={filters.city ?? ""}
         onChange={(e) => onChange({ ...filters, city: e.target.value })}
-        className="flex-1 sm:max-w-xs"
+        className="min-w-40 flex-1"
       />
 
       <Select
-        value={filters.type ?? "all"}
+        items={houseTypes}
+        value={typeValue}
         onValueChange={(value) =>
-          onChange({ ...filters, type: value as HouseType | "all" })
+          onChange({
+            ...filters,
+            type: value && value !== "all" ? (value as HouseType) : undefined,
+          })
         }
       >
         <SelectTrigger className="w-40">
@@ -66,9 +74,13 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
       </Select>
 
       <Select
-        value={String(filters.minBeds ?? 0)}
+        items={bedOptions}
+        value={bedsValue}
         onValueChange={(value) =>
-          onChange({ ...filters, minBeds: Number(value) })
+          onChange({
+            ...filters,
+            minBeds: value && value !== "0" ? Number(value) : undefined,
+          })
         }
       >
         <SelectTrigger className="w-36">

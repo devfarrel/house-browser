@@ -19,7 +19,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-5xl p-4 sm:p-6">
+    <main className="mx-auto p-4 sm:p-6">
       <ListingDetailContent listing={listing} />
     </main>
   );

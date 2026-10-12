@@ -85,10 +85,10 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
                     <span className="font-heading text-xl font-bold text-foreground">
                       ${listing.price.toLocaleString()}
                     </span>
-                    <span className="text-xs text-muted-foreground">
+                    {/* <span className="text-xs text-muted-foreground">
                       {" "}
                       /Total
-                    </span>
+                    </span> */}
                   </div>
 
                   <Button

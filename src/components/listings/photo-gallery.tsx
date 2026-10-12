@@ -26,7 +26,7 @@ export function PhotoGallery({ images, alt }: PhotoGalleryProps) {
       </div>
 
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x- px-6 pb-1">
+        <div className="flex gap-2 overflow-x-auto px-6 pb-1">
           {images.map((src, i) => (
             <button
               key={src}

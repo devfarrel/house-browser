@@ -2,21 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Ellipsis, Share, Info } from "lucide-react";
+import { Bath, Bed, Heart, MapPin, Share2, Square } from "lucide-react";
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Listing } from "@/types/listing";
@@ -77,56 +71,38 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
       )}
 
       <CardHeader className="flex-1">
-        <CardAction>
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <button
-                  onClick={(e) => e.stopPropagation()}
-                  aria-label="More options"
-                  className="cursor-pointer"
-                >
-                  <Ellipsis className="h-4 w-4" />
-                </button>
-              }
-            />
-            <DropdownMenuContent
-              align="end"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {user && (
-                <DropdownMenuItem onClick={() => toggleFavorite(listing.id)}>
-                  <Heart
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      isFavorited ? "fill-primary text-primary" : "",
-                    )}
-                  />
-                  {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem
-                render={
-                  <Link href={`/listing/${listing.id}`}>View Details</Link>
-                }
-              />
-              <DropdownMenuItem>
-                <Share />
-                <p>Share</p>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CardAction>
-        <CardTitle className="font-heading truncate text-xl">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin className="h-3.5 w-3.5 text-primary" />
+          <span>{listing.city}</span>
+        </div>
+        <CardTitle className="font-heading truncate text-xl font-bold">
           ${listing.price.toLocaleString()}
         </CardTitle>
         <CardDescription>
-          {listing.title} · {listing.city} · {listing.beds} bd / {listing.baths}{" "}
-          ba
+          <div className="flex items-center text-xs gap-2 text-muted-foreground border-y border-border/60 py-2.5">
+            <p className="flex items-center gap-1">
+              <Bed className="h-3.5 w-3.5" />
+              {listing.beds} Beds
+            </p>
+            <p className="flex items-center gap-1">
+              <Bath className="h-3.5 w-3.5" />
+              {listing.baths} Baths
+            </p>
+            <p className="flex items-center gap-1">
+              <Square className="h-3.5 w-3.5" />
+              {listing.sqft.toLocaleString()} sqft
+            </p>
+          </div>
         </CardDescription>
       </CardHeader>
 
       <CardFooter className="pt-2" onClick={(e) => e.stopPropagation()}>
+        <Button
+          variant="outline"
+          className="mr-1 cursor-pointer hover:bg-background/50"
+        >
+          <Share2 className="h-4 w-4" />
+        </Button>
         <Link href={`/listing/${listing.id}`} className="block w-full">
           <Button className="w-full cursor-pointer">View Details</Button>
         </Link>
