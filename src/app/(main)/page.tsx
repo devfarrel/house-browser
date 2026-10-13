@@ -1,4 +1,5 @@
 // src/app/(main)/page.tsx
+import type { Metadata } from "next";
 import {
   getAllListings,
   getCitySummaries,
@@ -10,8 +11,8 @@ import { CityListingsSection } from "@/components/home/city-listings-section";
 import { FeaturedListings } from "@/components/home/featured-listings";
 import { Footer } from "@/components/footer";
 
-export const metadata = {
-  title: "Hearth | Smart Property, Secure Future",
+export const metadata: Metadata = {
+  title: { absolute: "Hearth | Smart Property, Secure Future" },
   description:
     "Explore curated residential house listings across Austin, Denver, Seattle, Portland, and Nashville.",
 };

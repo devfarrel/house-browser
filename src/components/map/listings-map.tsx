@@ -53,6 +53,12 @@ function FlyToSelected({
     const listing = listings.find((l) => l.id === selectedListingId);
     if (!listing) return;
 
+    // The map is display:none on mobile list view, so it has no size and flyTo yields NaN.
+    const { x, y } = map.getSize();
+    if (x === 0 || y === 0) return;
+
+    map.flyTo([listing.lat, listing.lng], 14, { duration: 0.8 });
+
     map.flyTo([listing.lat, listing.lng], 14, { duration: 0.8 });
 
     const handleMoveEnd = () => {
@@ -65,7 +71,7 @@ function FlyToSelected({
     return () => {
       map.off("moveend", handleMoveEnd);
     };
-  }, [selectedListingId, listings, map]);
+  }, [selectedListingId, listings, map, markerRefs]);
 
   return null;
 }
@@ -93,7 +99,7 @@ export function ListingsMap({
       center={center}
       zoom={11}
       scrollWheelZoom
-      className="h-full w-full rounded-xl"
+      className="h-full w-full"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -1,12 +1,9 @@
 // src/app/(main)/browse/page.tsx
 import { BrowseView } from "@/components/browse-view";
 import type { HouseType, ListingFilters } from "@/types/listing";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Browse Homes | Hearth",
-  description:
-    "Browse houses, apartments, condos, and townhouses with an interactive map.",
-};
+export const metadata: Metadata = { title: "Browse homes" };
 
 const VALID_HOUSE_TYPES: readonly HouseType[] = [
   "House",

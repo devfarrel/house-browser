@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Heart } from "lucide-react";
+import { LogIn, LogOut, Heart } from "lucide-react";
 import Link from "next/link";
 import { useFavorites } from "@/lib/use-favorites";
 import { Button } from "@/components/ui/button";
@@ -16,15 +16,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "./ui/skeleton";
 
-export function AuthWidget() {
+interface AuthWidgetProps {
+  variant?: "avatar" | "tab";
+}
+
+const tabClass =
+  "flex flex-1 cursor-pointer flex-col items-center justify-center gap-0.5 text-xs font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:text-foreground";
+
+export function AuthWidget({ variant = "avatar" }: AuthWidgetProps) {
   const { user, loading, signOut } = useFavorites();
+  const isTab = variant === "tab";
 
   if (loading) {
-    return <Skeleton className="h-8 w-8 rounded-full" />;
+    return isTab ? (
+      <div className="flex flex-1 items-center justify-center">
+        <Skeleton className="h-8 w-8 rounded-full" />
+      </div>
+    ) : (
+      <Skeleton className="h-8 w-8 rounded-full" />
+    );
   }
 
   if (!user) {
-    return (
+    return isTab ? (
+      <Link href="/login" className={tabClass}>
+        <LogIn className="h-5 w-5" />
+        Sign in
+      </Link>
+    ) : (
       <Link href="/login" className="inline-block">
         <Button size="lg">Sign in</Button>
       </Link>
@@ -37,16 +56,31 @@ export function AuthWidget() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <button className="flex items-center gap-2 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-primary text-primary-foreground">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-          </button>
+          isTab ? (
+            <button className={tabClass}>
+              <Avatar className="h-5 w-5">
+                <AvatarFallback className="bg-primary text-[10px] text-primary-foreground">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              Account
+            </button>
+          ) : (
+            <button className="flex cursor-pointer items-center gap-2 rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+            </button>
+          )
         }
       />
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent
+        align="end"
+        side={isTab ? "top" : "bottom"}
+        className="w-56"
+      >
         <DropdownMenuGroup>
           <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
             {user.email}

@@ -14,7 +14,7 @@ export function PhotoGallery({ images, alt }: PhotoGalleryProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative aspect-video w-full overflow-hidden rounded-t-xl bg-muted">
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted">
         <Image
           src={images[activeIndex]}
           alt={`${alt} - photo ${activeIndex + 1}`}
@@ -26,16 +26,16 @@ export function PhotoGallery({ images, alt }: PhotoGalleryProps) {
       </div>
 
       {images.length > 1 && (
-        <div className="flex gap-2 overflow-x-auto px-6 pb-1">
+        <div className="flex gap-2 overflow-x-auto p-2 pb-1">
           {images.map((src, i) => (
             <button
               key={src}
               onClick={() => setActiveIndex(i)}
               className={cn(
-                "relative h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 transition-all",
+                "relative h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded-lg transition-opacity",
                 i === activeIndex
-                  ? "border-primary opacity-100"
-                  : "border-transparent opacity-60 hover:opacity-100",
+                  ? "ring-2 ring-primary"
+                  : "opacity-60 hover:opacity-100",
               )}
             >
               <Image
