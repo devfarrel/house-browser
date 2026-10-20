@@ -31,12 +31,12 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-40 w-full transition-colors duration-200 ${
           isHome ? "-mb-16" : ""
         } ${
           isTransparent
             ? "border-b-transparent bg-transparent text-white"
-            : "border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 text-foreground"
+            : "border-b border-border bg-background text-foreground"
         }`}
       >
         <div className="flex h-16 items-center justify-between px-6 sm:px-10">
@@ -59,7 +59,7 @@ export function Navbar() {
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                   isTransparent
                     ? isBrowseActive
-                      ? "bg-white/20 text-white font-semibold backdrop-blur-sm"
+                      ? "bg-white/20 text-white font-semibold"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                     : isBrowseActive
                       ? "bg-accent text-accent-foreground font-semibold"
@@ -73,7 +73,7 @@ export function Navbar() {
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                   isTransparent
                     ? isFavoritesActive
-                      ? "bg-white/20 text-white font-semibold backdrop-blur-sm"
+                      ? "bg-white/20 text-white font-semibold"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                     : isFavoritesActive
                       ? "bg-accent text-accent-foreground font-semibold"

@@ -24,7 +24,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 flex h-16 border-t border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 flex h-16 border-t border-border bg-background md:hidden"
     >
       {tabs.map(({ href, label, icon: Icon }) => {
         const active =
