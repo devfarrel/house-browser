@@ -56,7 +56,7 @@ export function Navbar() {
             <nav className="hidden items-center gap-1 sm:gap-2 md:flex">
               <Link
                 href="/browse"
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                   isTransparent
                     ? isBrowseActive
                       ? "bg-white/20 text-white font-semibold"
@@ -70,7 +70,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/favorites"
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                   isTransparent
                     ? isFavoritesActive
                       ? "bg-white/20 text-white font-semibold"

@@ -47,7 +47,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute top-3 left-3">
-                  <span className="rounded-full bg-background/85 px-3 py-1 text-xs font-semibold text-foreground backdrop-blur-md shadow-sm border border-border/50">
+                  <span className="rounded-full bg-background/85 px-3 py-1 text-xs font-semibold text-foreground shadow-sm border border-border/50">
                     {listing.type}
                   </span>
                 </div>
@@ -93,7 +93,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
 
                   <Button
                     size="sm"
-                    className="rounded-full px-4 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>View Home</span>
                     <ArrowRight className="h-3 w-3" />
@@ -107,10 +107,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
         {/* View All CTA */}
         <div className="mt-12 text-center">
           <Link href="/browse">
-            <Button
-              variant="outline"
-              className="rounded-full px-6 cursor-pointer text-sm"
-            >
+            <Button variant="outline" className="px-6 cursor-pointer text-sm">
               Explore All Listings
             </Button>
           </Link>

@@ -55,7 +55,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
                   key={city}
                   type="button"
                   onClick={() => setSelectedCity(city)}
-                  className={`rounded-full px-5 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                  className={`rounded-md px-5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
                     isSelected
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "border border-border bg-card text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -113,7 +113,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
           <Link href={`/browse?city=${encodeURIComponent(selectedCity)}`}>
             <Button
               variant="outline"
-              className="rounded-full px-6 cursor-pointer text-sm gap-2"
+              className="p-4 cursor-pointer text-sm gap-2"
             >
               <span>
                 Explore all {cityListings.length} {selectedCity} homes on map
@@ -158,14 +158,14 @@ function BentoListingCard({
 
       {/* Top Left: Property Type Tag */}
       <div className="absolute top-4 left-4">
-        <span className="rounded-full bg-black/45 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md border border-white/10">
+        <span className="rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium text-white/90 border border-white/10">
           {isFeatured ? `Featured • ${listing.type}` : listing.type}
         </span>
       </div>
 
       {/* Top Right: Price Badge */}
       <div className="absolute top-4 right-4">
-        <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md border border-white/20">
+        <span className="rounded-full bg-black/55 px-3 py-1 text-xs font-semibold text-white border border-white/20">
           ${listing.price.toLocaleString()}
         </span>
       </div>
@@ -182,7 +182,7 @@ function BentoListingCard({
         </div>
 
         {/* Hover Arrow Circle */}
-        <div className="shrink-0 rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/30">
+        <div className="shrink-0 rounded-full bg-white/20 p-2 text-white transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/30">
           <ArrowUpRight className="h-4 w-4" />
         </div>
       </div>
