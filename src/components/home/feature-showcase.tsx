@@ -67,13 +67,13 @@ export function FeatureShowcase() {
                 >
                   <div className="flex items-center gap-3">
                     {active ? (
-                      <Icon className="h-5 w-5" aria-hidden="true" />
+                      <Icon className="h-5 w-5 text-white" aria-hidden="true" />
                     ) : (
                       <span className="text-sm text-muted-foreground">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                     )}
-                    <span className="font-heading text-lg font-medium">
+                    <span className="font-heading text-lg font-medium text-white">
                       {title}
                     </span>
                   </div>

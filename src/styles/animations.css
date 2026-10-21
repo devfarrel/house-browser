@@ -1,0 +1,38 @@
+/* Entrance: fade and rise, staggered through --delay */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+.rise {
+  animation: rise 0.6s ease-out both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Counting numbers */
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+@keyframes count-up {
+  from {
+    --num: 0;
+  }
+}
+.count-up {
+  --num: var(--target);
+  counter-reset: num var(--num);
+  animation: count-up 1.2s ease-out;
+}
+.count-up::after {
+  content: counter(num);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .count-up {
+    animation: none;
+  }
+}

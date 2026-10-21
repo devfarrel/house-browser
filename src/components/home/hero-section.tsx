@@ -1,6 +1,7 @@
 // src/components/home/hero-section.tsx
 import Link from "next/link";
 import Image from "next/image";
+import { CountUp } from "@/components/count-up";
 import { ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,7 +102,9 @@ export function HeroSection({ totalListings, totalCities }: HeroSectionProps) {
         <dl className="mt-12 flex w-fit self-end divide-x divide-border rounded-lg border border-border bg-background text-foreground shadow-lg sm:mt-16">
           {stats.map(({ value, label }) => (
             <div key={label} className="px-6 py-4 text-center sm:px-8">
-              <dd className="font-heading text-2xl font-bold">{value}</dd>
+              <dd className="font-heading text-2xl font-bold">
+                <CountUp value={value} />
+              </dd>
               <dt className="mt-0.5 text-sm text-muted-foreground">{label}</dt>
             </div>
           ))}

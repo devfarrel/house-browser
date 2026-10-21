@@ -10,6 +10,7 @@ import { AboutSection } from "@/components/home/about-section";
 import { CityListingsSection } from "@/components/home/city-listings-section";
 import { FeaturedListings } from "@/components/home/featured-listings";
 import { Footer } from "@/components/footer";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: { absolute: "Hearth | Smart Property, Secure Future" },
@@ -31,10 +32,15 @@ export default function HomePage() {
           totalListings={allListings.length}
           totalCities={citySummaries.length}
         />
-        <AboutSection previewImages={previewImages} />
-        {/* Interactive city tab section */}
-        <CityListingsSection listings={allListings} />
-        <FeaturedListings listings={featuredListings} />
+        <Reveal>
+          <AboutSection previewImages={previewImages} />
+        </Reveal>
+        <Reveal>
+          <CityListingsSection listings={allListings} />
+        </Reveal>
+        <Reveal>
+          <FeaturedListings listings={featuredListings} />
+        </Reveal>
       </main>
       <Footer />
     </div>
