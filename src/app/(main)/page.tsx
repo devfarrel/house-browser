@@ -23,7 +23,6 @@ export default function HomePage() {
   const featuredListings = getFeaturedListings(6);
 
   const previewImages = featuredListings.map((l) => l.images[0]);
-  const heroCover = featuredListings[0]?.images[0] ?? "";
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -31,7 +30,6 @@ export default function HomePage() {
         <HeroSection
           totalListings={allListings.length}
           totalCities={citySummaries.length}
-          featuredCoverImage={heroCover}
         />
         <AboutSection previewImages={previewImages} />
         {/* Interactive city tab section */}
