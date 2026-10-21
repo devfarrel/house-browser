@@ -16,7 +16,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
   const router = useRouter();
 
   return (
-    <section className="py-20 bg-background border-t border-border">
+    <section className="py-16 sm:py-24 bg-background">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">

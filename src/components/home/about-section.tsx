@@ -47,7 +47,7 @@ export function AboutSection({ previewImages }: AboutSectionProps) {
         </div>
       </section>
 
-      <section className="border-y border-border bg-card py-16 sm:py-24">
+      <section className="bg-background py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 grid items-end gap-6 sm:mb-12 md:grid-cols-2 md:gap-12">
             <div>

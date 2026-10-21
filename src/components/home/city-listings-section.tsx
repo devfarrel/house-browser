@@ -34,7 +34,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
   const rightListings = cityListings.slice(3, 5);
 
   return (
-    <section className="py-20 border-t border-border bg-muted/20">
+    <section className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8">

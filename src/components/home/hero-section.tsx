@@ -8,14 +8,9 @@ import { Input } from "@/components/ui/input";
 interface HeroSectionProps {
   totalListings: number;
   totalCities: number;
-  featuredCoverImage: string;
 }
 
-export function HeroSection({
-  totalListings,
-  totalCities,
-  featuredCoverImage,
-}: HeroSectionProps) {
+export function HeroSection({ totalListings, totalCities }: HeroSectionProps) {
   const stats = [
     { value: totalListings, label: "Homes" },
     { value: totalCities, label: "Cities" },
@@ -26,25 +21,32 @@ export function HeroSection({
       {/* Background photo with a plain gradient overlay (no CSS filters, which are costly to repaint) */}
       <div className="absolute inset-0" aria-hidden="true">
         <Image
-          src={featuredCoverImage}
+          src={"/hero-background.jpg"}
           alt=""
           fill
           priority
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/55 to-black/45" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-2 pb-14 bg-linear-to-t from-background to-transparent sm:h-56"
+        />
       </div>
 
       {/* Same container as the sections below, so edges line up. pt clears the transparent navbar. */}
-      <div className="relative flex min-h-[85svh] w-full flex-col justify-between px-6 pt-28 pb-10 sm:px-10 sm:pt-36 lg:pt-40">
+      <div className="relative flex min-h-svh w-full flex-col justify-between px-6 pt-28 pb-10 sm:px-10 sm:pt-36 lg:pt-40">
         <div className="max-w-2xl">
           <h1 className="font-heading text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
             Smart Property.
             <br />
             Secure Future.
           </h1>
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/85">
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-white">
             Browse homes in {totalCities} US cities on a map, filter by price,
             bedrooms and type, and save the ones you like.
           </p>
@@ -96,11 +98,11 @@ export function HeroSection({
         </div>
 
         {/* Stats */}
-        <dl className="mt-12 self-end flex w-fit divide-x text-white shadow-lg">
+        <dl className="mt-12 flex w-fit self-end divide-x divide-border rounded-lg border border-border bg-background text-foreground shadow-lg sm:mt-16">
           {stats.map(({ value, label }) => (
             <div key={label} className="px-6 py-4 text-center sm:px-8">
               <dd className="font-heading text-2xl font-bold">{value}</dd>
-              <dt className="mt-0.5 text-sm text-white/70">{label}</dt>
+              <dt className="mt-0.5 text-sm text-muted-foreground">{label}</dt>
             </div>
           ))}
         </dl>

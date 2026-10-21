@@ -29,7 +29,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
 
   return (
     <Card
-      className="relative mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden pt-0 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer"
+      className="relative mx-auto flex h-full w-full max-w-sm flex-col overflow-hidden pt-0 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:ring-primary/40 select-none cursor-pointer"
       onMouseEnter={() => onHover?.(listing.id)}
       onMouseLeave={() => onHover?.(null)}
       onClick={() => onSelect?.(listing.id)}
@@ -99,7 +99,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
       <CardFooter className="pt-2" onClick={(e) => e.stopPropagation()}>
         <Button
           variant="outline"
-          className="mr-1 cursor-pointer hover:bg-background/50"
+          className="mr-1 cursor-pointer hover:bg-background/50 hover:border-primary/40"
         >
           <Share2 className="h-4 w-4" />
         </Button>
