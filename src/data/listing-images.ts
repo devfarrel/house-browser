@@ -1,21 +1,27 @@
-// Set these to the real number of files per category.
-const COUNTS = { living: 8, kitchen: 7, bathroom: 6 } as const;
+const EXTERIOR_COUNT = 23;
+
+// Set these to your real file counts (they should add up to 21).
+const ROOM_COUNTS = { living: 8, kitchen: 9, bathroom: 4 } as const;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-const pick = (
-  prefix: keyof typeof COUNTS,
+const pickRoom = (
+  prefix: keyof typeof ROOM_COUNTS,
   listingIndex: number,
   shift: number,
 ) =>
-  `/listings/${prefix}-${pad(((listingIndex + shift) % COUNTS[prefix]) + 1)}.jpg`;
+  `/listings/${prefix}-${pad(((listingIndex + shift) % ROOM_COUNTS[prefix]) + 1)}.jpg`;
 
-/** Deterministic gallery: own exterior + one photo from each room pool. */
+/**
+ * Deterministic gallery for the listing at `listingIndex`:
+ * its own exterior (wraps around, so listing 24 reuses exterior 1)
+ * plus one photo from each room pool.
+ */
 export function buildListingImages(listingIndex: number): string[] {
   return [
-    `/listings/exterior-${pad(listingIndex + 1)}.jpg`,
-    pick("living", listingIndex, 0),
-    pick("kitchen", listingIndex, 2),
-    pick("bathroom", listingIndex, 4),
+    `/listings/exterior-${pad((listingIndex % EXTERIOR_COUNT) + 1)}.jpg`,
+    pickRoom("living", listingIndex, 0),
+    pickRoom("kitchen", listingIndex, 2),
+    pickRoom("bathroom", listingIndex, 4),
   ];
 }

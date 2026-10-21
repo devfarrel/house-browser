@@ -1,6 +1,9 @@
-import { Listing } from "@/types/listing";
+import type { Listing } from "@/types/listing";
+import { buildListingImages } from "@/data/listing-images";
 
-export const listings: Listing[] = [
+type RawListing = Omit<Listing, "images">;
+
+const rawListings: RawListing[] = [
   {
     id: "1",
     title: "Cozy 2 Bed House in Austin",
@@ -13,13 +16,8 @@ export const listings: Listing[] = [
     type: "House",
     lat: 30.2711,
     lng: -97.7437,
-    images: [
-      "https://picsum.photos/seed/house1/800/600",
-      "https://picsum.photos/seed/house1-b/800/600",
-      "https://picsum.photos/seed/house1-c/800/600",
-      "https://picsum.photos/seed/house1-d/800/600",
-    ],
-    description: "A charming two-bedroom house tucked into a quiet Austin neighborhood, close to parks and coffee shops.",
+    description:
+      "A charming two-bedroom house tucked into a quiet Austin neighborhood, close to parks and coffee shops.",
   },
   {
     id: "2",
@@ -32,14 +30,9 @@ export const listings: Listing[] = [
     sqft: 700,
     type: "Apartment",
     lat: 30.2648,
-    lng: -97.7500,
-    images: [
-      "https://picsum.photos/seed/house2/800/600",
-      "https://picsum.photos/seed/house2-b/800/600",
-      "https://picsum.photos/seed/house2-c/800/600",
-      "https://picsum.photos/seed/house2-d/800/600",
-    ],
-    description: "A sleek one-bedroom apartment with skyline views and walkable access to downtown Austin.",
+    lng: -97.75,
+    description:
+      "A sleek one-bedroom apartment with skyline views and walkable access to downtown Austin.",
   },
   {
     id: "3",
@@ -51,15 +44,10 @@ export const listings: Listing[] = [
     baths: 3,
     sqft: 2800,
     type: "House",
-    lat: 30.2820,
-    lng: -97.7350,
-    images: [
-      "https://picsum.photos/seed/house3/800/600",
-      "https://picsum.photos/seed/house3-b/800/600",
-      "https://picsum.photos/seed/house3-c/800/600",
-      "https://picsum.photos/seed/house3-d/800/600",
-    ],
-    description: "A roomy family home with a large backyard, ideal for entertaining and located near top-rated schools.",
+    lat: 30.282,
+    lng: -97.735,
+    description:
+      "A roomy family home with a large backyard, ideal for entertaining and located near top-rated schools.",
   },
   {
     id: "4",
@@ -71,15 +59,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 1600,
     type: "Condo",
-    lat: 30.2600,
-    lng: -97.7480,
-    images: [
-      "https://picsum.photos/seed/house4/800/600",
-      "https://picsum.photos/seed/house4-b/800/600",
-      "https://picsum.photos/seed/house4-c/800/600",
-      "https://picsum.photos/seed/house4-d/800/600",
-    ],
-    description: "A bright riverside condo with an open floor plan and access to a shared rooftop terrace.",
+    lat: 30.26,
+    lng: -97.748,
+    description:
+      "A bright riverside condo with an open floor plan and access to a shared rooftop terrace.",
   },
   {
     id: "5",
@@ -93,13 +76,8 @@ export const listings: Listing[] = [
     type: "Townhouse",
     lat: 30.2755,
     lng: -97.7395,
-    images: [
-      "https://picsum.photos/seed/house5/800/600",
-      "https://picsum.photos/seed/house5-b/800/600",
-      "https://picsum.photos/seed/house5-c/800/600",
-      "https://picsum.photos/seed/house5-d/800/600",
-    ],
-    description: "A tidy townhouse with a private patio, minutes from Austin's best food trucks.",
+    description:
+      "A tidy townhouse with a private patio, minutes from Austin's best food trucks.",
   },
   {
     id: "6",
@@ -111,15 +89,10 @@ export const listings: Listing[] = [
     baths: 1,
     sqft: 680,
     type: "Apartment",
-    lat: 39.7420,
-    lng: -104.9880,
-    images: [
-      "https://picsum.photos/seed/house6/800/600",
-      "https://picsum.photos/seed/house6-b/800/600",
-      "https://picsum.photos/seed/house6-c/800/600",
-      "https://picsum.photos/seed/house6-d/800/600",
-    ],
-    description: "A compact mountain-view apartment close to Denver's downtown transit lines.",
+    lat: 39.742,
+    lng: -104.988,
+    description:
+      "A compact mountain-view apartment close to Denver's downtown transit lines.",
   },
   {
     id: "7",
@@ -132,14 +105,9 @@ export const listings: Listing[] = [
     sqft: 1900,
     type: "House",
     lat: 39.7355,
-    lng: -104.9950,
-    images: [
-      "https://picsum.photos/seed/house7/800/600",
-      "https://picsum.photos/seed/house7-b/800/600",
-      "https://picsum.photos/seed/house7-c/800/600",
-      "https://picsum.photos/seed/house7-d/800/600",
-    ],
-    description: "A classic brick house with a finished basement and a fenced-in yard for pets.",
+    lng: -104.995,
+    description:
+      "A classic brick house with a finished basement and a fenced-in yard for pets.",
   },
   {
     id: "8",
@@ -151,15 +119,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 1100,
     type: "Condo",
-    lat: 39.7460,
-    lng: -104.9820,
-    images: [
-      "https://picsum.photos/seed/house8/800/600",
-      "https://picsum.photos/seed/house8-b/800/600",
-      "https://picsum.photos/seed/house8-c/800/600",
-      "https://picsum.photos/seed/house8-d/800/600",
-    ],
-    description: "A modern condo with floor-to-ceiling windows and views of the Rockies.",
+    lat: 39.746,
+    lng: -104.982,
+    description:
+      "A modern condo with floor-to-ceiling windows and views of the Rockies.",
   },
   {
     id: "9",
@@ -171,15 +134,10 @@ export const listings: Listing[] = [
     baths: 3,
     sqft: 2600,
     type: "House",
-    lat: 39.7300,
-    lng: -104.9700,
-    images: [
-      "https://picsum.photos/seed/house9/800/600",
-      "https://picsum.photos/seed/house9-b/800/600",
-      "https://picsum.photos/seed/house9-c/800/600",
-      "https://picsum.photos/seed/house9-d/800/600",
-    ],
-    description: "A large suburban home with an open kitchen and a three-car garage.",
+    lat: 39.73,
+    lng: -104.97,
+    description:
+      "A large suburban home with an open kitchen and a three-car garage.",
   },
   {
     id: "10",
@@ -191,15 +149,10 @@ export const listings: Listing[] = [
     baths: 1,
     sqft: 850,
     type: "Townhouse",
-    lat: 39.7500,
-    lng: -104.9990,
-    images: [
-      "https://picsum.photos/seed/house10/800/600",
-      "https://picsum.photos/seed/house10-b/800/600",
-      "https://picsum.photos/seed/house10-c/800/600",
-      "https://picsum.photos/seed/house10-d/800/600",
-    ],
-    description: "A cozy starter townhouse just a short walk from local breweries and parks.",
+    lat: 39.75,
+    lng: -104.999,
+    description:
+      "A cozy starter townhouse just a short walk from local breweries and parks.",
   },
   {
     id: "11",
@@ -213,13 +166,8 @@ export const listings: Listing[] = [
     type: "Apartment",
     lat: 47.6062,
     lng: -122.3321,
-    images: [
-      "https://picsum.photos/seed/house11/800/600",
-      "https://picsum.photos/seed/house11-b/800/600",
-      "https://picsum.photos/seed/house11-c/800/600",
-      "https://picsum.photos/seed/house11-d/800/600",
-    ],
-    description: "A light-filled apartment near Seattle's waterfront with easy access to public transit.",
+    description:
+      "A light-filled apartment near Seattle's waterfront with easy access to public transit.",
   },
   {
     id: "12",
@@ -232,14 +180,9 @@ export const listings: Listing[] = [
     sqft: 1800,
     type: "House",
     lat: 47.6097,
-    lng: -122.3400,
-    images: [
-      "https://picsum.photos/seed/house12/800/600",
-      "https://picsum.photos/seed/house12-b/800/600",
-      "https://picsum.photos/seed/house12-c/800/600",
-      "https://picsum.photos/seed/house12-d/800/600",
-    ],
-    description: "A craftsman-style house with a covered porch, close to Seattle's best coffee roasters.",
+    lng: -122.34,
+    description:
+      "A craftsman-style house with a covered porch, close to Seattle's best coffee roasters.",
   },
   {
     id: "13",
@@ -251,15 +194,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 1150,
     type: "Condo",
-    lat: 47.6120,
-    lng: -122.3350,
-    images: [
-      "https://picsum.photos/seed/house13/800/600",
-      "https://picsum.photos/seed/house13-b/800/600",
-      "https://picsum.photos/seed/house13-c/800/600",
-      "https://picsum.photos/seed/house13-d/800/600",
-    ],
-    description: "A high-rise condo with a gym, rooftop lounge, and views of Puget Sound.",
+    lat: 47.612,
+    lng: -122.335,
+    description:
+      "A high-rise condo with a gym, rooftop lounge, and views of Puget Sound.",
   },
   {
     id: "14",
@@ -271,15 +209,10 @@ export const listings: Listing[] = [
     baths: 4,
     sqft: 3400,
     type: "House",
-    lat: 47.6200,
-    lng: -122.3500,
-    images: [
-      "https://picsum.photos/seed/house14/800/600",
-      "https://picsum.photos/seed/house14-b/800/600",
-      "https://picsum.photos/seed/house14-c/800/600",
-      "https://picsum.photos/seed/house14-d/800/600",
-    ],
-    description: "A stately home with a home theater, wine cellar, and landscaped garden.",
+    lat: 47.62,
+    lng: -122.35,
+    description:
+      "A stately home with a home theater, wine cellar, and landscaped garden.",
   },
   {
     id: "15",
@@ -291,15 +224,10 @@ export const listings: Listing[] = [
     baths: 1,
     sqft: 720,
     type: "Townhouse",
-    lat: 47.6000,
-    lng: -122.3250,
-    images: [
-      "https://picsum.photos/seed/house15/800/600",
-      "https://picsum.photos/seed/house15-b/800/600",
-      "https://picsum.photos/seed/house15-c/800/600",
-      "https://picsum.photos/seed/house15-d/800/600",
-    ],
-    description: "A tidy townhouse with a rooftop deck overlooking downtown Seattle.",
+    lat: 47.6,
+    lng: -122.325,
+    description:
+      "A tidy townhouse with a rooftop deck overlooking downtown Seattle.",
   },
   {
     id: "16",
@@ -313,13 +241,8 @@ export const listings: Listing[] = [
     type: "House",
     lat: 45.5152,
     lng: -122.6784,
-    images: [
-      "https://picsum.photos/seed/house16/800/600",
-      "https://picsum.photos/seed/house16-b/800/600",
-      "https://picsum.photos/seed/house16-c/800/600",
-      "https://picsum.photos/seed/house16-d/800/600",
-    ],
-    description: "A bungalow-style home with original hardwood floors and a garden out back.",
+    description:
+      "A bungalow-style home with original hardwood floors and a garden out back.",
   },
   {
     id: "17",
@@ -331,15 +254,10 @@ export const listings: Listing[] = [
     baths: 1,
     sqft: 650,
     type: "Apartment",
-    lat: 45.5230,
-    lng: -122.6700,
-    images: [
-      "https://picsum.photos/seed/house17/800/600",
-      "https://picsum.photos/seed/house17-b/800/600",
-      "https://picsum.photos/seed/house17-c/800/600",
-      "https://picsum.photos/seed/house17-d/800/600",
-    ],
-    description: "A compact apartment steps away from Portland's food cart pods and public parks.",
+    lat: 45.523,
+    lng: -122.67,
+    description:
+      "A compact apartment steps away from Portland's food cart pods and public parks.",
   },
   {
     id: "18",
@@ -351,15 +269,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 1400,
     type: "Condo",
-    lat: 45.5100,
-    lng: -122.6850,
-    images: [
-      "https://picsum.photos/seed/house18/800/600",
-      "https://picsum.photos/seed/house18-b/800/600",
-      "https://picsum.photos/seed/house18-c/800/600",
-      "https://picsum.photos/seed/house18-d/800/600",
-    ],
-    description: "A modern condo with an open floor plan and a shared courtyard garden.",
+    lat: 45.51,
+    lng: -122.685,
+    description:
+      "A modern condo with an open floor plan and a shared courtyard garden.",
   },
   {
     id: "19",
@@ -371,15 +284,10 @@ export const listings: Listing[] = [
     baths: 3,
     sqft: 2500,
     type: "House",
-    lat: 45.5300,
-    lng: -122.6600,
-    images: [
-      "https://picsum.photos/seed/house19/800/600",
-      "https://picsum.photos/seed/house19-b/800/600",
-      "https://picsum.photos/seed/house19-c/800/600",
-      "https://picsum.photos/seed/house19-d/800/600",
-    ],
-    description: "A family-friendly home with a large deck, close to top-rated Portland schools.",
+    lat: 45.53,
+    lng: -122.66,
+    description:
+      "A family-friendly home with a large deck, close to top-rated Portland schools.",
   },
   {
     id: "20",
@@ -391,15 +299,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 1050,
     type: "Townhouse",
-    lat: 45.5050,
-    lng: -122.6900,
-    images: [
-      "https://picsum.photos/seed/house20/800/600",
-      "https://picsum.photos/seed/house20-b/800/600",
-      "https://picsum.photos/seed/house20-c/800/600",
-      "https://picsum.photos/seed/house20-d/800/600",
-    ],
-    description: "A quiet townhouse just outside downtown, with a small private yard.",
+    lat: 45.505,
+    lng: -122.69,
+    description:
+      "A quiet townhouse just outside downtown, with a small private yard.",
   },
   {
     id: "21",
@@ -413,13 +316,8 @@ export const listings: Listing[] = [
     type: "House",
     lat: 36.1627,
     lng: -86.7816,
-    images: [
-      "https://picsum.photos/seed/house21/800/600",
-      "https://picsum.photos/seed/house21-b/800/600",
-      "https://picsum.photos/seed/house21-c/800/600",
-      "https://picsum.photos/seed/house21-d/800/600",
-    ],
-    description: "A Southern-style home with a wraparound porch, minutes from Nashville's music venues.",
+    description:
+      "A Southern-style home with a wraparound porch, minutes from Nashville's music venues.",
   },
   {
     id: "22",
@@ -431,15 +329,10 @@ export const listings: Listing[] = [
     baths: 1,
     sqft: 620,
     type: "Apartment",
-    lat: 36.1660,
-    lng: -86.7750,
-    images: [
-      "https://picsum.photos/seed/house22/800/600",
-      "https://picsum.photos/seed/house22-b/800/600",
-      "https://picsum.photos/seed/house22-c/800/600",
-      "https://picsum.photos/seed/house22-d/800/600",
-    ],
-    description: "A downtown apartment within walking distance of Nashville's live music scene.",
+    lat: 36.166,
+    lng: -86.775,
+    description:
+      "A downtown apartment within walking distance of Nashville's live music scene.",
   },
   {
     id: "23",
@@ -451,15 +344,10 @@ export const listings: Listing[] = [
     baths: 2,
     sqft: 980,
     type: "Condo",
-    lat: 36.1580,
-    lng: -86.7880,
-    images: [
-      "https://picsum.photos/seed/house23/800/600",
-      "https://picsum.photos/seed/house23-b/800/600",
-      "https://picsum.photos/seed/house23-c/800/600",
-      "https://picsum.photos/seed/house23-d/800/600",
-    ],
-    description: "A stylish condo with a rooftop pool and views of the Nashville skyline.",
+    lat: 36.158,
+    lng: -86.788,
+    description:
+      "A stylish condo with a rooftop pool and views of the Nashville skyline.",
   },
   {
     id: "24",
@@ -471,14 +359,14 @@ export const listings: Listing[] = [
     baths: 4,
     sqft: 3200,
     type: "House",
-    lat: 36.1500,
-    lng: -86.7700,
-    images: [
-      "https://picsum.photos/seed/house24/800/600",
-      "https://picsum.photos/seed/house24-b/800/600",
-      "https://picsum.photos/seed/house24-c/800/600",
-      "https://picsum.photos/seed/house24-d/800/600",
-    ],
-    description: "A grand estate-style home with a pool, gym, and expansive outdoor entertaining space.",
+    lat: 36.15,
+    lng: -86.77,
+    description:
+      "A grand estate-style home with a pool, gym, and expansive outdoor entertaining space.",
   },
 ];
+
+export const listings: Listing[] = rawListings.map((listing, index) => ({
+  ...listing,
+  images: buildListingImages(index),
+}));
