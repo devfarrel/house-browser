@@ -16,6 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Listing } from "@/types/listing";
 import { useFavorites } from "@/lib/use-favorites";
 import { cn } from "@/lib/utils";
+import { StatusBadge } from "./status-badge";
+import { formatAddress } from "@/lib/format-adress";
+import { getAgentById } from "@/lib/get-agent";
 
 interface ListingCardProps {
   listing: Listing;
@@ -26,6 +29,7 @@ interface ListingCardProps {
 export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
   const { user, favoriteIds, toggleFavorite } = useFavorites();
   const isFavorited = favoriteIds.has(listing.id);
+  const agent = getAgentById(listing.agentId);
 
   return (
     <Card
@@ -42,9 +46,10 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <Badge className="absolute left-2 top-2" variant="secondary">
-          {listing.type}
-        </Badge>
+        <div className="absolute left-2 top-2 flex gap-1.5">
+          <Badge variant="secondary">{listing.type}</Badge>
+          <StatusBadge status={listing.status} />
+        </div>
       </div>
 
       {user && (
@@ -70,7 +75,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
         </button>
       )}
 
-      <CardHeader className="flex-1">
+      <CardHeader className="flex-1 content-start gap-1">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <MapPin className="h-3.5 w-3.5 text-primary" />
           <span>{listing.city}</span>
@@ -78,8 +83,8 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
         <CardTitle className="font-heading truncate text-xl font-bold">
           ${listing.price.toLocaleString()}
         </CardTitle>
-        <CardDescription>
-          <div className="flex items-center text-xs gap-2 text-muted-foreground border-y border-border/60 py-2.5">
+        <CardDescription className="flex flex-col gap-1 text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs">
             <p className="flex items-center gap-1">
               <Bed className="h-3.5 w-3.5" />
               {listing.beds} Beds
@@ -93,16 +98,18 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
               {listing.sqft.toLocaleString()} sqft
             </p>
           </div>
-          <span className="mt-2 block truncate text-sm text-muted-foreground">
-            {listing.address}, {listing.city}, {listing.state} {listing.zipCode}
-          </span>
-          {/* <span className="mt-1 block truncate text-sm text-muted-foreground">
-            {agent.name}
-          </span> */}
+          <div className="mt-0.5">
+            <p className="truncate">{formatAddress(listing)}</p>
+            {agent && (
+              <p className="truncate text-xs">
+                {agent.name} - {agent.title}
+              </p>
+            )}
+          </div>
         </CardDescription>
       </CardHeader>
 
-      <CardFooter className="pt-2" onClick={(e) => e.stopPropagation()}>
+      <CardFooter onClick={(e) => e.stopPropagation()}>
         <Button
           variant="outline"
           className="mr-1 cursor-pointer hover:bg-background/50 hover:border-primary/40"

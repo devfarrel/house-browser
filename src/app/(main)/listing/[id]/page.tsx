@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getListingById, getAllListingIds } from "@/lib/get-listing";
 import { ListingDetailContent } from "@/components/listings/listing-detail-content";
+import { getAgentById } from "@/lib/get-agent";
 import { Metadata } from "next";
 
 interface ListingPageProps {
@@ -53,9 +54,17 @@ export default async function ListingPage({ params }: ListingPageProps) {
     notFound();
   }
 
+  const agent = getAgentById(listing.agentId);
+
+  if (!agent) {
+    throw new Error(
+      `Listing ${listing.id} references unknown agent ${listing.agentId}`,
+    );
+  }
+
   return (
-    <main className="mx-auto p-4 sm:p-6">
-      <ListingDetailContent listing={listing} />
-    </main>
+    <div className="mx-auto p-4 sm:p-6">
+      <ListingDetailContent listing={listing} agent={agent} />
+    </div>
   );
 }

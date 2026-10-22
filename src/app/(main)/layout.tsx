@@ -8,7 +8,7 @@ export default function MainLayout({
   return (
     <>
       <Navbar />
-      <div className="pb-16 md:pb-0">{children}</div>
+      <main className="pb-16 md:pb-0">{children}</main>
     </>
   );
 }

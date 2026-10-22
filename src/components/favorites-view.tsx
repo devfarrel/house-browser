@@ -38,14 +38,14 @@ function SplitLayout({
   map: ReactNode;
 }) {
   return (
-    <main className="flex h-[calc(100vh-4rem)]">
+    <div className="flex h-[calc(100vh-4rem)]">
       <div className="w-full overflow-y-auto p-4 lg:w-1/2">{children}</div>
       <div className="hidden h-full p-4 pl-0 lg:block lg:w-1/2">
         <div className="isolate h-full w-full overflow-hidden rounded-xl border border-border">
           {map}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -114,7 +114,7 @@ export function FavoritesView() {
 
   if (!user) {
     return (
-      <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
         <h1 className="font-heading text-2xl font-semibold">
           Sign in to see your favorites
         </h1>
@@ -124,13 +124,13 @@ export function FavoritesView() {
         <Link href="/login">
           <Button>Sign in</Button>
         </Link>
-      </main>
+      </div>
     );
   }
 
   if (favoriteListings.length === 0) {
     return (
-      <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center gap-4 p-4 text-center">
         <h1 className="font-heading text-2xl font-semibold">My Favorites</h1>
         <p className="text-muted-foreground">
           You haven&apos;t saved any listings yet.
@@ -138,7 +138,7 @@ export function FavoritesView() {
         <Link href="/browse">
           <Button variant="outline">Browse listings</Button>
         </Link>
-      </main>
+      </div>
     );
   }
 

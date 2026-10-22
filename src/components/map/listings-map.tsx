@@ -15,6 +15,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Listing } from "@/types/listing";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "../listings/status-badge";
 
 /** Below this zoom level markers are small dots; at or above it they show the price. */
 const PRICE_TAG_MIN_ZOOM = 12;
@@ -26,12 +27,17 @@ const compactPrice = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
 });
 
-function createMarkerIcon(label: string, showPrice: boolean, active: boolean) {
+function createMarkerIcon(
+  label: string,
+  showPrice: boolean,
+  active: boolean,
+  sold: boolean,
+) {
   const base = showPrice ? "price-marker__tag" : "price-marker__dot";
-  const modifier = active ? ` ${base}--active` : "";
+  const modifiers = `${sold ? ` ${base}--sold` : ""}${active ? ` ${base}--active` : ""}`;
   return L.divIcon({
     className: "price-marker",
-    html: `<span class="${base}${modifier}">${showPrice ? label : ""}</span>`,
+    html: `<span class="${base}${modifiers}">${showPrice ? label : ""}</span>`,
     iconSize: [0, 0],
     iconAnchor: [0, 0],
     popupAnchor: [0, showPrice ? -16 : -10],
@@ -107,8 +113,9 @@ function ListingMarker({
   const label = compactPrice.format(listing.price);
 
   const icon = useMemo(
-    () => createMarkerIcon(label, showPrice, isActive),
-    [label, showPrice, isActive],
+    () =>
+      createMarkerIcon(label, showPrice, isActive, listing.status === "sold"),
+    [label, showPrice, isActive, listing.status],
   );
 
   return (
@@ -134,9 +141,10 @@ function ListingMarker({
               sizes="220px"
               className="object-cover"
             />
-            <Badge className="absolute left-1.5 top-1.5" variant="secondary">
-              {listing.type}
-            </Badge>
+            <div className="absolute left-1.5 top-1.5 flex gap-1">
+              <Badge variant="secondary">{listing.type}</Badge>
+              <StatusBadge status={listing.status} />
+            </div>
           </div>
           <div className="space-y-1 p-3">
             <p className="m-0 font-heading text-base font-semibold text-foreground">

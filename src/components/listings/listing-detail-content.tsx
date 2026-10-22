@@ -22,6 +22,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import type { Listing } from "@/types/listing";
+import type { Agent } from "@/types/listing";
+import { formatAddress } from "@/lib/format-adress";
 import { PhotoGallery } from "@/components/listings/photo-gallery";
 import { ListingsMapClient } from "@/components/map/listings-map-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -33,35 +35,12 @@ import { useFavorites } from "@/lib/use-favorites";
 /*  Mock data                                                                 */
 /* -------------------------------------------------------------------------- */
 
-const mockAgents = [
-  {
-    name: "Jordan Reyes",
-    title: "Hearth Listing Agent",
-    phone: "+1 (555) 234-8901",
-  },
-  {
-    name: "Priya Patel",
-    title: "Hearth Listing Agent",
-    phone: "+1 (555) 456-1123",
-  },
-  {
-    name: "Sam Okafor",
-    title: "Hearth Listing Agent",
-    phone: "+1 (555) 890-4412",
-  },
-];
-
 type OpenHouseSlot = {
   day: string;
   date: string;
   start: string;
   end: string;
 };
-
-function getMockAgent(id: string) {
-  const index = Math.abs(Number(id) || 0) % mockAgents.length;
-  return mockAgents[index];
-}
 
 function getMockOpenHouses(id: string): OpenHouseSlot[] {
   const options: OpenHouseSlot[][] = [
@@ -104,15 +83,18 @@ const secondaryLinkClass = `inline-flex h-11 items-center justify-center gap-2 r
 
 interface ListingDetailContentProps {
   listing: Listing;
+  agent: Agent;
 }
 
-export function ListingDetailContent({ listing }: ListingDetailContentProps) {
+export function ListingDetailContent({
+  listing,
+  agent,
+}: ListingDetailContentProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const { favoriteIds, toggleFavorite } = useFavorites();
 
-  const agent = getMockAgent(listing.id);
   const openHouses = getMockOpenHouses(listing.id);
   const favorite = favoriteIds.has(listing.id);
 
@@ -124,10 +106,9 @@ export function ListingDetailContent({ listing }: ListingDetailContentProps) {
     .map((n) => n[0])
     .join("");
 
-  const fullAddress = `${listing.address}, ${listing.city}`;
+  const fullAddress = formatAddress(listing);
   const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
 
-  const agentEmail = `${agent.name.toLowerCase().replace(/\s+/g, ".")}@hearthhomes.mock`;
   const agentTel = agent.phone.replace(/[^\d+]/g, "");
   const mailtoSubject = encodeURIComponent(
     `Inquiry regarding ${listing.title} (${listing.address})`,
@@ -135,7 +116,7 @@ export function ListingDetailContent({ listing }: ListingDetailContentProps) {
   const mailtoBody = encodeURIComponent(
     `Hi ${agent.name},\n\nI am interested in scheduling a viewing for ${listing.title} located at ${listing.address} listed at $${listing.price.toLocaleString()}.\n\nCould you please let me know your availability?\n\nThank you!`,
   );
-  const mailtoHref = `mailto:${agentEmail}?subject=${mailtoSubject}&body=${mailtoBody}`;
+  const mailtoHref = `mailto:${agent.email}?subject=${mailtoSubject}&body=${mailtoBody}`;
 
   const isLongDescription = listing.description.length > DESCRIPTION_LIMIT;
 
@@ -178,7 +159,7 @@ export function ListingDetailContent({ listing }: ListingDetailContentProps) {
 
   return (
     <div className="min-h-screen bg-background pb-28 lg:pb-16">
-      <main className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
         {/* Action row */}
         <div className="flex items-center justify-between pb-4">
           <Button
@@ -461,7 +442,7 @@ export function ListingDetailContent({ listing }: ListingDetailContentProps) {
                       className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-foreground"
                     >
                       <Mail className="h-4 w-4 shrink-0 text-primary" />
-                      <span className="truncate">{agentEmail}</span>
+                      <span className="truncate">{agent.email}</span>
                     </a>
                   </li>
                   <li className="flex items-center gap-2.5 text-muted-foreground">
@@ -478,10 +459,10 @@ export function ListingDetailContent({ listing }: ListingDetailContentProps) {
             </div>
           </aside>
         </div>
-      </main>
+      </div>
 
       {/* Mobile sticky CTA (the sidebar sits at the bottom of the page on small screens) */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-md lg:hidden">
+      <div className="fixed inset-x-0 bottom-16 z-1000 border-t border-border bg-background/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:bottom-0 lg:hidden">
         <div className="mx-auto flex max-w-7xl items-center gap-4">
           <div className="min-w-0">
             <p className="font-heading text-lg font-bold leading-tight text-foreground">

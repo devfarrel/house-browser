@@ -27,7 +27,7 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <main className="flex-1">
+      <div className="flex-1">
         <HeroSection
           totalListings={allListings.length}
           totalCities={citySummaries.length}
@@ -41,7 +41,7 @@ export default function HomePage() {
         <Reveal>
           <FeaturedListings listings={featuredListings} />
         </Reveal>
-      </main>
+      </div>
       <Footer />
     </div>
   );

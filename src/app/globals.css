@@ -190,6 +190,14 @@
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
 }
 
+.price-marker__tag--sold {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+.price-marker__dot--sold {
+  background: var(--muted-foreground);
+}
+
 .price-marker__tag--active {
   transform: translate(-50%, -50%) scale(1.12);
   border-color: var(--primary);
