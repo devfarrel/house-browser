@@ -157,3 +157,55 @@
 .leaflet-popup-tip {
   background: var(--card) !important;
 }
+
+/* Price markers (divIcon) */
+.price-marker {
+  background: transparent;
+  border: 0;
+}
+
+.price-marker__tag,
+.price-marker__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.price-marker__tag {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+  color: var(--card-foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+}
+
+.price-marker__tag--active {
+  transform: translate(-50%, -50%) scale(1.12);
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.price-marker__dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--background);
+  border-radius: 9999px;
+  background: var(--primary);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.4);
+}
+
+.price-marker__dot--active {
+  transform: translate(-50%, -50%) scale(1.4);
+}

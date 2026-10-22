@@ -1,4 +1,14 @@
 export type HouseType = "House" | "Apartment" | "Condo" | "Townhouse";
+export type ListingStatus = "for-sale" | "pending" | "sold";
+
+export interface Agent {
+  id: string;
+  name: string;
+  title: string;
+  phone: string;
+  email: string;
+  office: string;
+}
 
 export interface Listing {
   id: string;
@@ -14,6 +24,10 @@ export interface Listing {
   lng: number;
   images: string[];
   description: string;
+  state: string;
+  zipCode: string;
+  status: ListingStatus;
+  agentId: string;
 }
 
 export interface ListingFilters {

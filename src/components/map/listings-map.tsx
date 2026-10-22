@@ -1,29 +1,42 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import L from "leaflet";
-import { useRef } from "react";
 import Link from "next/link";
-import { Listing } from "@/types/listing";
 import Image from "next/image";
-
+import type { Listing } from "@/types/listing";
 import { Badge } from "@/components/ui/badge";
 
-// Leaflet's default marker icons reference image paths that break under
-// bundlers like Webpack/Turbopack. Rebuilding the icon from a CDN avoids
-// broken/missing marker images.
-const defaultIcon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+/** Below this zoom level markers are small dots; at or above it they show the price. */
+const PRICE_TAG_MIN_ZOOM = 12;
+
+const compactPrice = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  notation: "compact",
+  maximumFractionDigits: 1,
 });
+
+function createMarkerIcon(label: string, showPrice: boolean, active: boolean) {
+  const base = showPrice ? "price-marker__tag" : "price-marker__dot";
+  const modifier = active ? ` ${base}--active` : "";
+  return L.divIcon({
+    className: "price-marker",
+    html: `<span class="${base}${modifier}">${showPrice ? label : ""}</span>`,
+    iconSize: [0, 0],
+    iconAnchor: [0, 0],
+    popupAnchor: [0, showPrice ? -16 : -10],
+  });
+}
 
 function FitBounds({ listings }: { listings: Listing[] }) {
   const map = useMap();
@@ -59,8 +72,6 @@ function FlyToSelected({
 
     map.flyTo([listing.lat, listing.lng], 14, { duration: 0.8 });
 
-    map.flyTo([listing.lat, listing.lng], 14, { duration: 0.8 });
-
     const handleMoveEnd = () => {
       markerRefs.current[selectedListingId]?.openPopup();
       map.off("moveend", handleMoveEnd);
@@ -74,6 +85,118 @@ function FlyToSelected({
   }, [selectedListingId, listings, map, markerRefs]);
 
   return null;
+}
+
+interface ListingMarkerProps {
+  listing: Listing;
+  showPrice: boolean;
+  isActive: boolean;
+  isDimmed: boolean;
+  registerMarker: (id: string, marker: L.Marker | null) => void;
+  onHover?: (id: string | null) => void;
+}
+
+function ListingMarker({
+  listing,
+  showPrice,
+  isActive,
+  isDimmed,
+  registerMarker,
+  onHover,
+}: ListingMarkerProps) {
+  const label = compactPrice.format(listing.price);
+
+  const icon = useMemo(
+    () => createMarkerIcon(label, showPrice, isActive),
+    [label, showPrice, isActive],
+  );
+
+  return (
+    <Marker
+      position={[listing.lat, listing.lng]}
+      icon={icon}
+      title={`${listing.title}, ${label}`}
+      zIndexOffset={isActive ? 1000 : 0}
+      opacity={isDimmed ? 0.5 : 1}
+      ref={(instance) => registerMarker(listing.id, instance)}
+      eventHandlers={{
+        mouseover: () => onHover?.(listing.id),
+        mouseout: () => onHover?.(null),
+      }}
+    >
+      <Popup>
+        <Link href={`/listing/${listing.id}`} className="block no-underline">
+          <div className="relative h-28 w-full overflow-hidden rounded-t-[inherit]">
+            <Image
+              src={listing.images[0]}
+              alt={listing.title}
+              fill
+              sizes="220px"
+              className="object-cover"
+            />
+            <Badge className="absolute left-1.5 top-1.5" variant="secondary">
+              {listing.type}
+            </Badge>
+          </div>
+          <div className="space-y-1 p-3">
+            <p className="m-0 font-heading text-base font-semibold text-foreground">
+              ${listing.price.toLocaleString()}
+            </p>
+            <p className="m-0 truncate text-xs text-muted-foreground">
+              {listing.title}
+            </p>
+            <p className="m-0 text-xs text-muted-foreground">
+              {listing.beds} bd · {listing.baths} ba · {listing.city}
+            </p>
+          </div>
+        </Link>
+      </Popup>
+    </Marker>
+  );
+}
+
+interface ListingMarkersProps {
+  listings: Listing[];
+  activeListingId?: string | null;
+  selectedListingId?: string | null;
+  registerMarker: (id: string, marker: L.Marker | null) => void;
+  onMarkerHover?: (id: string | null) => void;
+}
+
+/** Lives inside <MapContainer> so it can follow the zoom level. */
+function ListingMarkers({
+  listings,
+  activeListingId,
+  selectedListingId,
+  registerMarker,
+  onMarkerHover,
+}: ListingMarkersProps) {
+  const map = useMap();
+  const [zoom, setZoom] = useState(() => map.getZoom());
+
+  useMapEvents({
+    zoomend: () => setZoom(map.getZoom()),
+  });
+
+  const showPrice = zoom >= PRICE_TAG_MIN_ZOOM;
+
+  return (
+    <>
+      {listings.map((listing) => (
+        <ListingMarker
+          key={listing.id}
+          listing={listing}
+          showPrice={showPrice}
+          isActive={
+            listing.id === activeListingId || listing.id === selectedListingId
+          }
+          isDimmed={Boolean(activeListingId) && activeListingId !== listing.id}
+          registerMarker={registerMarker}
+          onHover={onMarkerHover}
+        />
+      ))}
+    </>
+  );
 }
 
 interface ListingsMapProps {
@@ -94,6 +217,10 @@ export function ListingsMap({
 
   const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
+  const registerMarker = useCallback((id: string, marker: L.Marker | null) => {
+    markerRefs.current[id] = marker;
+  }, []);
+
   return (
     <MapContainer
       center={center}
@@ -111,55 +238,13 @@ export function ListingsMap({
         selectedListingId={selectedListingId}
         markerRefs={markerRefs}
       />
-      {listings.map((listing) => (
-        <Marker
-          key={listing.id}
-          position={[listing.lat, listing.lng]}
-          icon={defaultIcon}
-          ref={(instance) => {
-            markerRefs.current[listing.id] = instance;
-          }}
-          opacity={activeListingId && activeListingId !== listing.id ? 0.5 : 1}
-          eventHandlers={{
-            mouseover: () => onMarkerHover?.(listing.id),
-            mouseout: () => onMarkerHover?.(null),
-          }}
-        >
-          <Popup>
-            <Link
-              href={`/listing/${listing.id}`}
-              className="block no-underline"
-            >
-              <div className="relative h-28 w-full overflow-hidden rounded-t-[inherit]">
-                <Image
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  fill
-                  sizes="220px"
-                  className="object-cover"
-                />
-                <Badge
-                  className="absolute left-1.5 top-1.5"
-                  variant="secondary"
-                >
-                  {listing.type}
-                </Badge>
-              </div>
-              <div className="space-y-1 p-3">
-                <p className="m-0 font-heading text-base font-semibold text-foreground">
-                  ${listing.price.toLocaleString()}
-                </p>
-                <p className="m-0 truncate text-xs text-muted-foreground">
-                  {listing.title}
-                </p>
-                <p className="m-0 text-xs text-muted-foreground">
-                  {listing.beds} bd · {listing.baths} ba · {listing.city}
-                </p>
-              </div>
-            </Link>
-          </Popup>
-        </Marker>
-      ))}
+      <ListingMarkers
+        listings={listings}
+        activeListingId={activeListingId}
+        selectedListingId={selectedListingId}
+        registerMarker={registerMarker}
+        onMarkerHover={onMarkerHover}
+      />
     </MapContainer>
   );
 }

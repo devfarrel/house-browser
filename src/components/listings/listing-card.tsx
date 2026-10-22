@@ -93,6 +93,12 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
               {listing.sqft.toLocaleString()} sqft
             </p>
           </div>
+          <span className="mt-2 block truncate text-sm text-muted-foreground">
+            {listing.address}, {listing.city}, {listing.state} {listing.zipCode}
+          </span>
+          {/* <span className="mt-1 block truncate text-sm text-muted-foreground">
+            {agent.name}
+          </span> */}
         </CardDescription>
       </CardHeader>
 
