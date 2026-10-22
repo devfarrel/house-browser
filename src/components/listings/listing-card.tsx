@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Bath, Bed, Heart, MapPin, Share2, Square } from "lucide-react";
+import { Bath, Bed, Heart, MapPin, Share2, Square, Check } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -17,8 +17,9 @@ import { Listing } from "@/types/listing";
 import { useFavorites } from "@/lib/use-favorites";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "./status-badge";
-import { formatAddress } from "@/lib/format-adress";
+import { formatAddress } from "@/lib/format-address";
 import { getAgentById } from "@/lib/get-agent";
+import { useCopyLink } from "@/lib/use-copy-link";
 
 interface ListingCardProps {
   listing: Listing;
@@ -30,6 +31,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
   const { user, favoriteIds, toggleFavorite } = useFavorites();
   const isFavorited = favoriteIds.has(listing.id);
   const agent = getAgentById(listing.agentId);
+  const { copied, copy } = useCopyLink();
 
   return (
     <Card
@@ -84,7 +86,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
           ${listing.price.toLocaleString()}
         </CardTitle>
         <CardDescription className="flex flex-col gap-1 text-muted-foreground">
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-xs border-y border-border/60 py-1.5">
             <p className="flex items-center gap-1">
               <Bed className="h-3.5 w-3.5" />
               {listing.beds} Beds
@@ -112,9 +114,18 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
       <CardFooter onClick={(e) => e.stopPropagation()}>
         <Button
           variant="outline"
+          onClick={() => copy(`/listing/${listing.id}`)}
+          aria-label="Copy link to this listing"
           className="mr-1 cursor-pointer hover:bg-background/50 hover:border-primary/40"
         >
-          <Share2 className="h-4 w-4" />
+          {copied ? (
+            <Check className="h-4 w-4 text-primary" />
+          ) : (
+            <Share2 className="h-4 w-4" />
+          )}
+          <span className="sr-only" aria-live="polite">
+            {copied ? "Link copied" : ""}
+          </span>
         </Button>
         <Link href={`/listing/${listing.id}`} className="block w-full">
           <Button className="w-full cursor-pointer">View Details</Button>

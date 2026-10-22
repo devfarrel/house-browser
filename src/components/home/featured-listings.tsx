@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, MapPin, Bed, Bath, Square } from "lucide-react";
 import type { Listing } from "@/types/listing";
 import { Button } from "@/components/ui/button";
+import { formatAddress } from "@/lib/format-address";
 
 interface FeaturedListingsProps {
   listings: Listing[];
@@ -21,7 +22,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Newest Deals for Your Needs
+            Newest Deals for Your <em className="italic">Needs</em>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Explore high-demand, newly launched listings carefully selected to
@@ -77,6 +78,9 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
                     <Square className="h-3.5 w-3.5" />
                     {listing.sqft.toLocaleString()} sqft
                   </span>
+                </div>
+                <div className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                  <p className="truncate">{formatAddress(listing)}</p>
                 </div>
 
                 {/* Bottom Bar: Price & Pill CTA with Arrow */}

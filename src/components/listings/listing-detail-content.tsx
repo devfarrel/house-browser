@@ -21,37 +21,16 @@ import {
   Share2,
   ShieldCheck,
 } from "lucide-react";
-import type { Listing } from "@/types/listing";
-import type { Agent } from "@/types/listing";
-import { formatAddress } from "@/lib/format-adress";
+import type { Agent, Listing, OpenHouseSlot } from "@/types/listing";
+import { formatAddress } from "@/lib/format-address";
 import { PhotoGallery } from "@/components/listings/photo-gallery";
 import { ListingsMapClient } from "@/components/map/listings-map-client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/lib/use-favorites";
-
-/* -------------------------------------------------------------------------- */
-/*  Mock data                                                                 */
-/* -------------------------------------------------------------------------- */
-
-type OpenHouseSlot = {
-  day: string;
-  date: string;
-  start: string;
-  end: string;
-};
-
-function getMockOpenHouses(id: string): OpenHouseSlot[] {
-  const options: OpenHouseSlot[][] = [
-    [{ day: "Sat", date: "Oct 18", start: "11:00 AM", end: "1:00 PM" }],
-    [
-      { day: "Sat", date: "Oct 18", start: "11:00 AM", end: "1:00 PM" },
-      { day: "Sun", date: "Oct 19", start: "1:00 PM", end: "3:00 PM" },
-    ],
-  ];
-  return options[Math.abs(Number(id) || 0) % options.length];
-}
+import { getInquiryMailto } from "@/lib/contact";
+import { useCopyLink } from "@/lib/use-copy-link";
 
 const FULL_DAY: Record<string, string> = {
   Mon: "Monday",
@@ -84,18 +63,19 @@ const secondaryLinkClass = `inline-flex h-11 items-center justify-center gap-2 r
 interface ListingDetailContentProps {
   listing: Listing;
   agent: Agent;
+  openHouses: OpenHouseSlot[];
 }
 
 export function ListingDetailContent({
   listing,
   agent,
+  openHouses,
 }: ListingDetailContentProps) {
   const router = useRouter();
-  const [copied, setCopied] = useState(false);
+
   const [expanded, setExpanded] = useState(false);
   const { favoriteIds, toggleFavorite } = useFavorites();
 
-  const openHouses = getMockOpenHouses(listing.id);
   const favorite = favoriteIds.has(listing.id);
 
   const pricePerSqft =
@@ -110,13 +90,7 @@ export function ListingDetailContent({
   const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
 
   const agentTel = agent.phone.replace(/[^\d+]/g, "");
-  const mailtoSubject = encodeURIComponent(
-    `Inquiry regarding ${listing.title} (${listing.address})`,
-  );
-  const mailtoBody = encodeURIComponent(
-    `Hi ${agent.name},\n\nI am interested in scheduling a viewing for ${listing.title} located at ${listing.address} listed at $${listing.price.toLocaleString()}.\n\nCould you please let me know your availability?\n\nThank you!`,
-  );
-  const mailtoHref = `mailto:${agent.email}?subject=${mailtoSubject}&body=${mailtoBody}`;
+  const mailtoHref = getInquiryMailto(listing, agent);
 
   const isLongDescription = listing.description.length > DESCRIPTION_LIMIT;
 
@@ -145,17 +119,8 @@ export function ListingDetailContent({
     }
   };
 
-  const handleShare = async () => {
-    if (typeof window !== "undefined") {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch {
-        // Fallback if clipboard API is restricted
-      }
-    }
-  };
+  const { copied, copy } = useCopyLink();
+  const handleShare = () => copy(`/listing/${listing.id}`);
 
   return (
     <div className="min-h-screen bg-background pb-28 lg:pb-16">
@@ -462,7 +427,7 @@ export function ListingDetailContent({
       </div>
 
       {/* Mobile sticky CTA (the sidebar sits at the bottom of the page on small screens) */}
-      <div className="fixed inset-x-0 bottom-16 z-1000 border-t border-border bg-background/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:bottom-0 lg:hidden">
+      <div className="fixed inset-x-0 bottom-16 z-40 border-t border-border bg-background/90 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:bottom-0 lg:hidden">
         <div className="mx-auto flex max-w-7xl items-center gap-4">
           <div className="min-w-0">
             <p className="font-heading text-lg font-bold leading-tight text-foreground">

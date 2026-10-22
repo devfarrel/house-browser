@@ -104,6 +104,12 @@ export function Footer() {
             listings, prices and photos are sample data.
           </p>
         </div>
+
+        {/* Oversized wordmark. Decorative: the name is already in the brand link above. */}
+        <div
+          aria-hidden="true"
+          className="mt-10 select-none overflow-hidden text-center font-heading text-[min(25vw,18rem)] leading-none font-bold tracking-tight text-foreground/6 after:content-['Hearth']"
+        />
       </div>
     </footer>
   );

@@ -2,11 +2,14 @@ import { notFound } from "next/navigation";
 import { getListingById, getAllListingIds } from "@/lib/get-listing";
 import { ListingDetailContent } from "@/components/listings/listing-detail-content";
 import { getAgentById } from "@/lib/get-agent";
+import { getOpenHouses } from "@/lib/open-houses";
 import { Metadata } from "next";
 
 interface ListingPageProps {
   params: Promise<{ id: string }>;
 }
+
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return getAllListingIds().map((id) => ({ id }));
@@ -62,9 +65,15 @@ export default async function ListingPage({ params }: ListingPageProps) {
     );
   }
 
+  const openHouses = getOpenHouses(listing);
+
   return (
     <div className="mx-auto p-4 sm:p-6">
-      <ListingDetailContent listing={listing} agent={agent} />
+      <ListingDetailContent
+        listing={listing}
+        agent={agent}
+        openHouses={openHouses}
+      />
     </div>
   );
 }
