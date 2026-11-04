@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useFavorites } from "@/lib/use-favorites";
+import { getAuthErrorMessage } from "@/lib/auth-error-message";
 
 interface AuthFormProps extends React.ComponentProps<"form"> {
   mode: "login" | "signup";
@@ -39,7 +40,7 @@ export function AuthForm({ mode, className, ...props }: AuthFormProps) {
     setLoading(false);
 
     if (error) {
-      setError(error.message);
+      setError(getAuthErrorMessage(error)); // was: setError(error.message)
       return;
     }
 

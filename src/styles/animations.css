@@ -36,3 +36,34 @@
     animation: none;
   }
 }
+
+/* Scroll-driven text reveal. --p (0 to 1) is written by TextReveal on scroll;
+   --n is the number of units, --i a unit's position, --w how many units fade at once. */
+.scroll-reveal__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* The visible text is generated content, so it only exists as decoration. */
+.scroll-reveal__unit::before {
+  content: attr(data-text);
+}
+
+/* Without JavaScript or with reduced motion, everything stays fully visible. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .scroll-reveal {
+    --p: 0;
+  }
+  .scroll-reveal__unit {
+    opacity: clamp(
+      var(--dim),
+      calc(
+        var(--dim) +
+          ((var(--p) * (var(--n) + var(--w)) - var(--i)) / var(--w)) *
+          (1 - var(--dim))
+      ),
+      1
+    );
+    transition: opacity 180ms ease-out;
+  }
+}

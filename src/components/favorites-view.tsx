@@ -122,7 +122,7 @@ export function FavoritesView() {
           Save listings you like and find them here later.
         </p>
         <Link href="/login">
-          <Button>Sign in</Button>
+          <Button size="xl">Sign in</Button>
         </Link>
       </div>
     );
@@ -136,7 +136,9 @@ export function FavoritesView() {
           You haven&apos;t saved any listings yet.
         </p>
         <Link href="/browse">
-          <Button variant="outline">Browse listings</Button>
+          <Button size="xl" variant="outline">
+            Browse listings
+          </Button>
         </Link>
       </div>
     );

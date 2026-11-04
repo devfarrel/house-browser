@@ -1,5 +1,6 @@
 // src/components/footer.tsx
 import Link from "next/link";
+import { Container } from "@/components/container";
 import { Home } from "lucide-react";
 import { getCitySummaries } from "@/lib/get-listing";
 
@@ -32,85 +33,88 @@ export function Footer() {
 
   return (
     <footer className="mt-12 border-t border-border">
-      <div className="mx-auto max-w-6xl px-4 pt-14 pb-8 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-[1.6fr_1fr_1fr]">
-          {/* Brand */}
-          <div className="col-span-2 space-y-5 md:col-span-1">
-            <Link
-              href="/"
-              className="inline-flex cursor-pointer items-center gap-2 font-heading text-2xl font-bold text-primary transition-opacity hover:opacity-90"
-            >
-              <Home className="h-6 w-6" />
-              <span>Hearth</span>
-            </Link>
-            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              A house-listing browser built to show map-driven search, filters
-              and saved favorites. Sample data, real features.
-            </p>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              <GithubMark className="h-4 w-4" />
-              View source on GitHub
-            </a>
+      <Container>
+        <div className="pt-14 pb-8">
+          <div className="grid grid-cols-2 gap-10 md:grid-cols-[1.6fr_1fr_1fr]">
+            {/* Brand */}
+            <div className="col-span-2 space-y-5 md:col-span-1">
+              <Link
+                href="/"
+                className="inline-flex cursor-pointer items-center gap-2 font-heading text-2xl font-bold text-primary transition-opacity hover:opacity-90"
+              >
+                <Home className="h-6 w-6" />
+                <span>Hearth</span>
+              </Link>
+              <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+                A house-listing browser built to show map-driven search, filters
+                and saved favorites. Sample data, real features.
+              </p>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+              >
+                <GithubMark className="h-4 w-4" />
+                View source on GitHub
+              </a>
+            </div>
+
+            {/* Explore */}
+            <nav aria-label="Explore" className="space-y-4">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Explore
+              </h2>
+              <ul className="space-y-2.5">
+                {exploreLinks.map(({ href, label }) => (
+                  <li key={href}>
+                    <Link href={href} className={linkClass}>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Cities */}
+            <nav aria-label="Cities" className="space-y-4">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                Cities
+              </h2>
+              <ul className="space-y-2.5">
+                {cities.map((c) => (
+                  <li key={c.city}>
+                    <Link
+                      href={`/browse?city=${encodeURIComponent(c.city)}`}
+                      className={linkClass}
+                    >
+                      {c.city}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          {/* Explore */}
-          <nav aria-label="Explore" className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-              Explore
-            </h2>
-            <ul className="space-y-2.5">
-              {exploreLinks.map(({ href, label }) => (
-                <li key={href}>
-                  <Link href={href} className={linkClass}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Bottom bar */}
+          <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {new Date().getFullYear()} Hearth. A portfolio project by
+              Farrel.
+            </p>
+            <p>
+              Built with Next.js, Tailwind CSS, Leaflet and Supabase. All
+              listings, prices and photos are sample data.
+            </p>
+          </div>
 
-          {/* Cities */}
-          <nav aria-label="Cities" className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-              Cities
-            </h2>
-            <ul className="space-y-2.5">
-              {cities.map((c) => (
-                <li key={c.city}>
-                  <Link
-                    href={`/browse?city=${encodeURIComponent(c.city)}`}
-                    className={linkClass}
-                  >
-                    {c.city}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Oversized wordmark. Decorative: the name is already in the brand link above. */}
+          <div
+            aria-hidden="true"
+            className="mt-10 select-none overflow-hidden text-center font-heading text-[min(25vw,18rem)] leading-none font-bold tracking-tight text-foreground/6 after:content-['Hearth']"
+          />
         </div>
-
-        {/* Bottom bar */}
-        <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} Hearth. A portfolio project by Farrel.
-          </p>
-          <p>
-            Built with Next.js, Tailwind CSS, Leaflet and Supabase. All
-            listings, prices and photos are sample data.
-          </p>
-        </div>
-
-        {/* Oversized wordmark. Decorative: the name is already in the brand link above. */}
-        <div
-          aria-hidden="true"
-          className="mt-10 select-none overflow-hidden text-center font-heading text-[min(25vw,18rem)] leading-none font-bold tracking-tight text-foreground/6 after:content-['Hearth']"
-        />
-      </div>
+      </Container>
     </footer>
   );
 }

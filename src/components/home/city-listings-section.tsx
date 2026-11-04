@@ -4,6 +4,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Container } from "@/components/container";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Listing } from "@/types/listing";
 import { Button } from "@/components/ui/button";
@@ -35,7 +36,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
 
   return (
     <section className="bg-background py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <Container>
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
@@ -114,6 +115,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
             <Button
               variant="outline"
               className="p-4 cursor-pointer text-sm gap-2"
+              size="xl"
             >
               <span>
                 Explore all {cityListings.length} {selectedCity} homes on map
@@ -122,7 +124,7 @@ export function CityListingsSection({ listings }: CityListingsSectionProps) {
             </Button>
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -114,6 +114,7 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
       <CardFooter onClick={(e) => e.stopPropagation()}>
         <Button
           variant="outline"
+          size="icon-lg"
           onClick={() => copy(`/listing/${listing.id}`)}
           aria-label="Copy link to this listing"
           className="mr-1 cursor-pointer hover:bg-background/50 hover:border-primary/40"
@@ -128,7 +129,9 @@ export function ListingCard({ listing, onHover, onSelect }: ListingCardProps) {
           </span>
         </Button>
         <Link href={`/listing/${listing.id}`} className="block w-full">
-          <Button className="w-full cursor-pointer">View Details</Button>
+          <Button size="lg" className="w-full cursor-pointer">
+            View Details
+          </Button>
         </Link>
       </CardFooter>
     </Card>

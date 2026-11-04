@@ -4,6 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Container } from "@/components/container";
 import { ArrowRight, MapPin, Bed, Bath, Square } from "lucide-react";
 import type { Listing } from "@/types/listing";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
 
   return (
     <section className="py-16 sm:py-24 bg-background">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <Container>
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
@@ -96,7 +97,7 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
                   </div>
 
                   <Button
-                    size="sm"
+                    size="lg"
                     className="px-4 text-xs font-medium flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>View Home</span>
@@ -111,12 +112,16 @@ export function FeaturedListings({ listings }: FeaturedListingsProps) {
         {/* View All CTA */}
         <div className="mt-12 text-center">
           <Link href="/browse">
-            <Button variant="outline" className="px-6 cursor-pointer text-sm">
+            <Button
+              variant="outline"
+              size="xl"
+              className="px-6 cursor-pointer text-sm"
+            >
               Explore All Listings
             </Button>
           </Link>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

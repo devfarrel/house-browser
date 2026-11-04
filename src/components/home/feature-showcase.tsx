@@ -48,18 +48,18 @@ export function FeatureShowcase() {
 
   return (
     <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-        <ul className="space-y-2">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        <ul className="flex flex-col gap-2">
           {features.map(({ id, icon: Icon, title, description }, index) => {
             const active = id === activeId;
             return (
-              <li key={id}>
+              <li key={id} className="lg:flex-1">
                 <button
                   type="button"
                   aria-pressed={active}
                   onClick={() => setActiveId(id)}
                   className={cn(
-                    "w-full cursor-pointer rounded-2xl p-5 text-left transition-colors duration-300",
+                    "w-full cursor-pointer rounded-2xl p-5 text-left transition-colors duration-300 lg:flex lg:h-full lg:flex-col lg:justify-center",
                     active
                       ? "bg-primary text-background shadow-md"
                       : "hover:bg-accent/50",
@@ -91,9 +91,12 @@ export function FeatureShowcase() {
           })}
         </ul>
 
-        <div className="rounded-2xl bg-linear-to-br from-primary/15 via-accent/40 to-secondary/20 p-4 sm:p-6">
+        <div className="rounded-2xl bg-linear-to-br from-primary/15 via-accent/40 to-secondary/20 p-4 sm:p-6 lg:flex lg:items-center">
           {features.map(({ id, image, alt }, index) => (
-            <div key={id} className={id === activeId ? "block" : "hidden"}>
+            <div
+              key={id}
+              className={id === activeId ? "block w-full" : "hidden"}
+            >
               <Image
                 src={image}
                 alt={alt}

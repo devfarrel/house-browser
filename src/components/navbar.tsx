@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Container } from "@/components/container";
 import { Home } from "lucide-react";
 import { AuthWidget } from "@/components/auth-widget";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -39,66 +40,68 @@ export function Navbar() {
             : "border-b border-border bg-background text-foreground"
         }`}
       >
-        <div className="flex h-16 items-center justify-between px-6 sm:px-10">
-          <div className="flex items-center gap-8">
-            {/* Logo */}
-            <Link
-              href="/"
-              className={`flex items-center gap-2 font-heading text-xl font-bold transition-opacity hover:opacity-90 cursor-pointer ${
-                isTransparent ? "text-white" : "text-primary"
+        <Container>
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center gap-8">
+              {/* Logo */}
+              <Link
+                href="/"
+                className={`flex items-center gap-2 font-heading text-xl font-bold transition-opacity hover:opacity-90 cursor-pointer ${
+                  isTransparent ? "text-white" : "text-primary"
+                }`}
+              >
+                <Home className="h-5 w-5" />
+                <span>Hearth</span>
+              </Link>
+
+              {/* Navigation Links */}
+              <nav className="hidden items-center gap-1 sm:gap-2 md:flex">
+                <Link
+                  href="/browse"
+                  className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                    isTransparent
+                      ? isBrowseActive
+                        ? "bg-white/20 text-white font-semibold"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                      : isBrowseActive
+                        ? "bg-accent text-accent-foreground font-semibold"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  }`}
+                >
+                  Browse
+                </Link>
+                <Link
+                  href="/favorites"
+                  className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                    isTransparent
+                      ? isFavoritesActive
+                        ? "bg-white/20 text-white font-semibold"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                      : isFavoritesActive
+                        ? "bg-accent text-accent-foreground font-semibold"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                  }`}
+                >
+                  Favorites
+                </Link>
+              </nav>
+            </div>
+
+            {/* Right side controls */}
+            <div
+              className={`flex items-center gap-3 ${
+                isTransparent
+                  ? "[&_button]:text-white [&_button]:border-white/20"
+                  : ""
               }`}
             >
-              <Home className="h-5 w-5" />
-              <span>Hearth</span>
-            </Link>
-
-            {/* Navigation Links */}
-            <nav className="hidden items-center gap-1 sm:gap-2 md:flex">
-              <Link
-                href="/browse"
-                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
-                  isTransparent
-                    ? isBrowseActive
-                      ? "bg-white/20 text-white font-semibold"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
-                    : isBrowseActive
-                      ? "bg-accent text-accent-foreground font-semibold"
-                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                }`}
-              >
-                Browse
-              </Link>
-              <Link
-                href="/favorites"
-                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
-                  isTransparent
-                    ? isFavoritesActive
-                      ? "bg-white/20 text-white font-semibold"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
-                    : isFavoritesActive
-                      ? "bg-accent text-accent-foreground font-semibold"
-                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                }`}
-              >
-                Favorites
-              </Link>
-            </nav>
-          </div>
-
-          {/* Right side controls */}
-          <div
-            className={`flex items-center gap-3 ${
-              isTransparent
-                ? "[&_button]:text-white [&_button]:border-white/20"
-                : ""
-            }`}
-          >
-            <ThemeToggle />
-            <div className="hidden md:block">
-              <AuthWidget />
+              <ThemeToggle />
+              <div className="hidden md:block">
+                <AuthWidget />
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
       </header>
       <BottomNav />
     </>

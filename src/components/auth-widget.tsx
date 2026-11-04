@@ -45,7 +45,7 @@ export function AuthWidget({ variant = "avatar" }: AuthWidgetProps) {
       </Link>
     ) : (
       <Link href="/login" className="inline-block">
-        <Button size="lg">Sign in</Button>
+        <Button size="xl">Sign in</Button>
       </Link>
     );
   }

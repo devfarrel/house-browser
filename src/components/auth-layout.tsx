@@ -20,7 +20,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <Image
-          src="https://picsum.photos/seed/authpage/1200/1600"
+          src="/listings/exterior-01.jpg"
           alt=""
           fill
           sizes="50vw"
