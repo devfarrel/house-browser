@@ -52,7 +52,6 @@
 }
 
 :root {
-  scroll-behavior: smooth;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.153 0.006 107.1);
   --popover: oklch(1 0 0);
@@ -129,7 +128,6 @@
     @apply bg-background text-foreground;
   }
   html {
-    scroll-behavior: smooth;
     @apply font-sans;
   }
   @media (prefers-reduced-motion: reduce) {

@@ -10,6 +10,7 @@ import { ListingGrid } from "@/components/listings/listing-grid";
 import type { Listing, ListingFilters } from "@/types/listing";
 import { Button } from "@/components/ui/button";
 import { SplitView } from "./split-view";
+import { ReactLenis } from "lenis/react";
 
 const ListingsMapClient = dynamic(
   () =>
@@ -46,7 +47,11 @@ export function BrowseView({ initialFilters = {} }: BrowseViewProps) {
           <div className="p-4 pb-4">
             <FilterBar filters={filters} onChange={setFilters} />
           </div>
-          <div className="flex-1 overflow-y-auto p-4">
+          <ReactLenis
+            options={{ lerp: 0.1 }}
+            className="flex-1 overflow-y-auto p-4"
+            data-lenis-prevent
+          >
             {filteredListings.length > 0 ? (
               <ListingGrid
                 listings={filteredListings}
@@ -66,7 +71,7 @@ export function BrowseView({ initialFilters = {} }: BrowseViewProps) {
                 </Button>
               </div>
             )}
-          </div>
+          </ReactLenis>
         </>
       }
       map={
